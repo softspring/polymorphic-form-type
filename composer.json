@@ -1,0 +1,14 @@
+{
+    "name": "softspring/polymorphic-form-type",
+    "description": "Symfony Polymorphic Form Type",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "symfony/form": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Softspring\\PolymorphicFormType\\": "src/"
+        }
+    }
+}
