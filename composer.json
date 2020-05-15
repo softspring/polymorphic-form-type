@@ -8,7 +8,15 @@
     },
     "autoload": {
         "psr-4": {
-            "Softspring\\PolymorphicFormType\\": "src/"
+            "Softspring\\PolymorphicFormType\\": ""
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Softspring\\PolymorphicFormType\\Tests\\": "Tests/"
         }
     },
     "extra": {
