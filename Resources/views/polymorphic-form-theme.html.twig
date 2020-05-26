@@ -9,7 +9,8 @@
 {% block polymorphic_collection_label %}
     <div class="row mt-3 mb-3">
         <div class="col-sm-6">
-            {% set element = 'h3' %}
+            {% set element = 'p' %}
+            {% set label_attr = label_attr | merge({'class':'h4'}) %}
 
             {% if label is not same as(false) -%}
             {% if label is empty -%}
@@ -25,10 +26,8 @@
             <{{ element|default('label') }}{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>{{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}</{{ element|default('label') }}>
         {%- endif -%}
     </div>
-    <div class="col-sm-6">
-        <div class="float-right">
-            {{ block('polymorphic_prototype_buttons') }}
-        </div>
+    <div class="col-sm-6 text-right">
+        {{ block('polymorphic_prototype_buttons') }}
     </div>
     </div>
 {% endblock polymorphic_collection_label %}
@@ -48,11 +47,11 @@
 {%- block polymorphic_prototype_buttons -%}
     <!-- Buttons -->
     <div id="polymorphic_prototypes" class="polymorphic-collection-prototypes">
-        <h3>{{ 'form.tree.polymorphic.prototypes.label'|trans }}</h3>
+        <p class="h2">{{ 'form.tree.polymorphic.prototypes.label'|trans }}</p>
         {% for key, prototype in form.vars.prototypes %}
-            <a href="#" {{ block('polymorphic_prototype_button_attributes') }}>
+            <button type="button" class="cursor-pointer" {{ block('polymorphic_prototype_button_attributes') }}>
                 {{ translation_domain is same as(false) ? prototype.vars.prototype_button_label : prototype.vars.prototype_button_label|trans({}, translation_domain) }}
-            </a>
+            </button>
         {% endfor %}
     </div>
 {%- endblock polymorphic_prototype_buttons -%}
