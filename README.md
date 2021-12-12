@@ -4,4 +4,4 @@
 [![Latest Unstable Version](https://poser.pugx.org/softspring/polymorphic-form-type/v/unstable.svg)](https://packagist.org/packages/softspring/polymorphic-form-type)
 [![License](https://poser.pugx.org/softspring/polymorphic-form-type/license.svg)](https://packagist.org/packages/softspring/polymorphic-form-type)
 [![Total Downloads](https://poser.pugx.org/softspring/polymorphic-form-type/downloads)](https://packagist.org/packages/softspring/polymorphic-form-type)
-[![Build status](https://travis-ci.com/softspring/polymorphic-form-type.svg?branch=master)](https://travis-ci.com/softspring/polymorphic-form-type)
+[![Build status](https://app.travis-ci.com/github/softspring/polymorphic-form-type.svg?branch=master)](https://app.travis-ci.com/github/softspring/polymorphic-form-type)
