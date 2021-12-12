@@ -56,7 +56,7 @@ class NodesResizeFormListener implements EventSubscriberInterface
      */
     public function preSetData(FormEvent $event)
     {
-        $nodes = $event->getData();
+        $nodes = $event->getData() ?? [];
         $form = $event->getForm();
 
         foreach ($nodes as $i => $node) {
