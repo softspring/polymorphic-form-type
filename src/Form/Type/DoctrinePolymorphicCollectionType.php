@@ -20,9 +20,6 @@ class DoctrinePolymorphicCollectionType extends PolymorphicCollectionType
 
     /**
      * DoctrinePolymorphicCollectionType constructor.
-     *
-     * @param FormFactory|null            $formFactory
-     * @param EntityManagerInterface|null $em
      */
     public function __construct(FormFactory $formFactory = null, EntityManagerInterface $em = null)
     {
@@ -39,7 +36,7 @@ class DoctrinePolymorphicCollectionType extends PolymorphicCollectionType
 
         $resolver->setDefaults([
             'entity_manager' => null,
-        ]);;
+        ]);
     }
 
     public function getBlockPrefix()
@@ -48,9 +45,8 @@ class DoctrinePolymorphicCollectionType extends PolymorphicCollectionType
     }
 
     /**
-     * @param array $options
-     *
      * @return EntityManagerInterface
+     *
      * @throws RuntimeException
      */
     protected function getEntityManager(array $options)

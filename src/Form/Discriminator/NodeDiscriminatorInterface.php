@@ -39,7 +39,7 @@ interface NodeDiscriminatorInterface
 
     /**
      * @param string $className
-     * @param mixed $id
+     * @param mixed  $id
      *
      * @return object
      */

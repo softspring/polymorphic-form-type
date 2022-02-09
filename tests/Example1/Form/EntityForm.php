@@ -41,7 +41,7 @@ class EntityForm extends AbstractType
                 'size' => Size::class,
                 'weight' => Weight::class,
                 'category' => Category::class,
-            ]
+            ],
         ]);
     }
 }

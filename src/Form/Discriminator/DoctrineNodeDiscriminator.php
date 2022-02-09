@@ -19,10 +19,6 @@ class DoctrineNodeDiscriminator extends NodeDiscriminator
 
     /**
      * DoctrineNodeDiscriminator constructor.
-     *
-     * @param EntityManagerInterface $em
-     * @param array                  $formTypeDiscriminatorMap
-     * @param string                 $abstractClass
      */
     public function __construct(EntityManagerInterface $em, array $formTypeDiscriminatorMap, string $abstractClass)
     {
@@ -54,7 +50,7 @@ class DoctrineNodeDiscriminator extends NodeDiscriminator
     {
         $classMetadata = $this->em->getClassMetadata(get_class($object));
 
-        if (sizeof($classMetadata->identifier)>1) {
+        if (sizeof($classMetadata->identifier) > 1) {
             throw new RuntimeException('DoctrinePolymorphicCollection only supports entities with one identity field');
         }
 

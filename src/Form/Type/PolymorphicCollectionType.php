@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class PolymorphicCollectionType
+ * Class PolymorphicCollectionType.
  */
 class PolymorphicCollectionType extends AbstractType
 {
@@ -94,7 +94,7 @@ class PolymorphicCollectionType extends AbstractType
         $prototypes = [];
 
         foreach ($options['types_map'] as $discr => $formClass) {
-            /** @var AbstractNodeType $formType */
+            /* @var AbstractNodeType $formType */
             if (is_object($formClass)) {
                 $formType = $formClass;
             } elseif (class_exists($formClass)) {
@@ -112,9 +112,8 @@ class PolymorphicCollectionType extends AbstractType
     }
 
     /**
-     * @param array $options
-     *
      * @return FormFactory
+     *
      * @throws RuntimeException
      */
     protected function getFormFactory(array $options)
@@ -133,10 +132,7 @@ class PolymorphicCollectionType extends AbstractType
     }
 
     /**
-     * Configure event subscriber for resizing with data transformer
-     *
-     * @param FormBuilderInterface $builder
-     * @param array                $options
+     * Configure event subscriber for resizing with data transformer.
      */
     protected function configureResizeEventSubscriber(FormBuilderInterface $builder, array $options)
     {

@@ -18,9 +18,6 @@ class NodeDiscriminator implements NodeDiscriminatorInterface
 
     /**
      * NodeDiscriminator constructor.
-     *
-     * @param array $objectDiscriminatorMap
-     * @param array $formTypeDiscriminatorMap
      */
     public function __construct(array $objectDiscriminatorMap, array $formTypeDiscriminatorMap)
     {

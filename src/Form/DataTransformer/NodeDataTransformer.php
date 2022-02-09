@@ -7,7 +7,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
- * Class NodeDataTransformer
+ * Class NodeDataTransformer.
  */
 class NodeDataTransformer implements DataTransformerInterface
 {
@@ -18,8 +18,6 @@ class NodeDataTransformer implements DataTransformerInterface
 
     /**
      * NodeDataTransformer constructor.
-     *
-     * @param NodeDiscriminator $nodeDiscriminator
      */
     public function __construct(NodeDiscriminator $nodeDiscriminator)
     {
@@ -33,7 +31,7 @@ class NodeDataTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
-        if ($value === null) {
+        if (null === $value) {
             return null;
         }
 
@@ -42,7 +40,7 @@ class NodeDataTransformer implements DataTransformerInterface
         try {
             $reflection = new \ReflectionClass($value);
             foreach ($reflection->getProperties() as $property) {
-                $getterName = 'get' . ucfirst($property->getName());
+                $getterName = 'get'.ucfirst($property->getName());
                 if ($reflection->hasMethod($getterName)) {
                     $method = $reflection->getMethod($getterName);
                     $data[lcfirst($property->getName())] = $method->invoke($value);
@@ -88,7 +86,7 @@ class NodeDataTransformer implements DataTransformerInterface
             $reflection = new \ReflectionClass($element);
 
             foreach ($data as $field => $fieldValue) {
-                $setterName = 'set' . ucfirst($field);
+                $setterName = 'set'.ucfirst($field);
                 if ($reflection->hasMethod($setterName) || $reflection->getParentClass() && $reflection->hasMethod($setterName)) {
                     $method = $reflection->getMethod($setterName);
                     $method->invoke($element, $fieldValue);

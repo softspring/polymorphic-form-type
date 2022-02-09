@@ -3,16 +3,16 @@
 namespace Softspring\PolymorphicFormType\Form\EventListener;
 
 use Softspring\PolymorphicFormType\Form\Discriminator\NodeDiscriminatorInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\RuntimeException;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 
 /**
- * Class NodesResizeFormListener
+ * Class NodesResizeFormListener.
  */
 class NodesResizeFormListener implements EventSubscriberInterface
 {
@@ -28,9 +28,6 @@ class NodesResizeFormListener implements EventSubscriberInterface
 
     /**
      * NodesResizeFormListener constructor.
-     *
-     * @param NodeDiscriminatorInterface $nodeDiscriminator
-     * @param DataTransformerInterface   $transformer
      */
     public function __construct(NodeDiscriminatorInterface $nodeDiscriminator, DataTransformerInterface $transformer)
     {
@@ -43,16 +40,14 @@ class NodesResizeFormListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_SET_DATA => 'preSetData',
             FormEvents::PRE_SUBMIT => 'preSubmit',
-        );
+        ];
     }
 
     /**
-     * Before data is set, add the existing collection subforms
-     *
-     * @param FormEvent $event
+     * Before data is set, add the existing collection subforms.
      */
     public function preSetData(FormEvent $event)
     {
@@ -68,9 +63,7 @@ class NodesResizeFormListener implements EventSubscriberInterface
     }
 
     /**
-     * After submitted data is set (and before validation), add the new collection subforms
-     *
-     * @param FormEvent $event
+     * After submitted data is set (and before validation), add the new collection subforms.
      */
     public function preSubmit(FormEvent $event)
     {
@@ -91,9 +84,8 @@ class NodesResizeFormListener implements EventSubscriberInterface
     }
 
     /**
-     * @param mixed         $name
-     * @param string        $discr
-     * @param FormInterface $form
+     * @param mixed  $name
+     * @param string $discr
      */
     protected function addSubform($name, $discr, FormInterface $form)
     {
@@ -108,7 +100,7 @@ class NodesResizeFormListener implements EventSubscriberInterface
             'error_bubbling' => false,
         ];
 
-        /** @var AbstractType $formType */
+        /* @var AbstractType $formType */
         if (is_object($formClass)) {
             $formType = $formClass;
         } elseif (is_string($formClass) && class_exists($formClass)) {

@@ -12,12 +12,12 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class AbstractNodeType
+ * Class AbstractNodeType.
  */
 abstract class AbstractNodeType extends AbstractType
 {
     /**
-     * Declare as final to force to define some defaults
+     * Declare as final to force to define some defaults.
      *
      * If needed override configureChildOptions method
      *
@@ -35,16 +35,13 @@ abstract class AbstractNodeType extends AbstractType
         $this->configureChildOptions($resolver);
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     protected function configureChildOptions(OptionsResolver $resolver)
     {
         // nothing to do on default, override method if needed
     }
 
     /**
-     * Declare as final to force to define some defaults
+     * Declare as final to force to define some defaults.
      *
      * If needed override buildChildForm method
      *
@@ -66,14 +63,10 @@ abstract class AbstractNodeType extends AbstractType
         }
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
     abstract protected function buildChildForm(FormBuilderInterface $builder, array $options);
 
     /**
-     * Declare as final to force to define some defaults
+     * Declare as final to force to define some defaults.
      *
      * If needed override buildChildView method
      *
@@ -84,18 +77,13 @@ abstract class AbstractNodeType extends AbstractType
         $this->buildChildView($view, $form, $options);
     }
 
-    /**
-     * @param FormView      $view
-     * @param FormInterface $form
-     * @param array         $options
-     */
     protected function buildChildView(FormView $view, FormInterface $form, array $options)
     {
         // nothing to do on default, override method if needed
     }
 
     /**
-     * Declare as final to force to define some defaults
+     * Declare as final to force to define some defaults.
      *
      * If needed override finishChildView method
      *
@@ -109,11 +97,6 @@ abstract class AbstractNodeType extends AbstractType
         $view->vars['prototype_button_attr'] = $options['prototype_button_attr'];
     }
 
-    /**
-     * @param FormView      $view
-     * @param FormInterface $form
-     * @param array         $options
-     */
     protected function finishChildView(FormView $view, FormInterface $form, array $options)
     {
         // nothing to do on default, override method if needed
