@@ -39,7 +39,7 @@ class DoctrinePolymorphicCollectionType extends PolymorphicCollectionType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'polymorphic_collection';
     }
