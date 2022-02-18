@@ -13,30 +13,34 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DoctrinePolymorphicCollectionType extends PolymorphicCollectionType
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $em;
+    protected EntityManagerInterface $em;
 
-    /**
-     * DoctrinePolymorphicCollectionType constructor.
-     */
     public function __construct(FormFactory $formFactory = null, EntityManagerInterface $em = null)
     {
         parent::__construct($formFactory);
         $this->em = $em;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
+            'abstract_class' => null,
             'entity_manager' => null,
+            'id_field' => '_node_id',
         ]);
+
+        $resolver->setRequired('abstract_class');
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        if (empty($options['abstract_class'])) {
+            throw new RuntimeException('abstract_class must be set');
+        }
+
+        parent::buildForm($builder, $options);
     }
 
     public function getBlockPrefix(): string
@@ -45,11 +49,9 @@ class DoctrinePolymorphicCollectionType extends PolymorphicCollectionType
     }
 
     /**
-     * @return EntityManagerInterface
-     *
      * @throws RuntimeException
      */
-    protected function getEntityManager(array $options)
+    protected function getEntityManager(array $options): EntityManagerInterface
     {
         if ($options['entity_manager']) {
             if (!$options['entity_manager'] instanceof EntityManagerInterface) {
@@ -64,14 +66,11 @@ class DoctrinePolymorphicCollectionType extends PolymorphicCollectionType
         throw new RuntimeException('Entity manager is required for DoctrinePolymorphicCollectionType, check documentation.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureResizeEventSubscriber(FormBuilderInterface $builder, array $options)
     {
         $em = $this->getEntityManager($options);
-        $discriminator = new DoctrineNodeDiscriminator($em, $options['types_map'], $options['abstract_class']);
-        $transformer = new NodeDataTransformer($discriminator);
-        $builder->addEventSubscriber(new NodesResizeFormListener($discriminator, $transformer));
+        $discriminator = new DoctrineNodeDiscriminator($em, $options['types_map'], $options['abstract_class'], $options['types_options']);
+        $transformer = new NodeDataTransformer($discriminator, $options['discriminator_field'], $options['id_field']);
+        $builder->addEventSubscriber(new NodesResizeFormListener($discriminator, $transformer, $options['discriminator_field'], $options['id_field']));
     }
 }

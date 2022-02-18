@@ -6,22 +6,17 @@ use Softspring\PolymorphicFormType\Form\Discriminator\NodeDiscriminator;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-/**
- * Class NodeDataTransformer.
- */
 class NodeDataTransformer implements DataTransformerInterface
 {
-    /**
-     * @var NodeDiscriminator
-     */
-    protected $nodeDiscriminator;
+    protected NodeDiscriminator $nodeDiscriminator;
+    protected string $discriminatorField;
+    protected ?string $idField;
 
-    /**
-     * NodeDataTransformer constructor.
-     */
-    public function __construct(NodeDiscriminator $nodeDiscriminator)
+    public function __construct(NodeDiscriminator $nodeDiscriminator, string $discriminatorField, ?string $idField)
     {
         $this->nodeDiscriminator = $nodeDiscriminator;
+        $this->discriminatorField = $discriminatorField;
+        $this->idField = $idField;
     }
 
     /**
@@ -50,8 +45,11 @@ class NodeDataTransformer implements DataTransformerInterface
                 }
             }
 
-            $data['_node_id'] = $data[$this->nodeDiscriminator->getIdFieldForObject($value)] ?? null;
-            $data['_node_discr'] = $this->nodeDiscriminator->getDiscriminatorForObject($value);
+            if ($this->idField) {
+                $data[$this->idField] = $data[$this->nodeDiscriminator->getIdFieldForObject($value)] ?? null;
+            }
+
+            $data[$this->discriminatorField] = $this->nodeDiscriminator->getDiscriminatorForObject($value);
 
             return $data;
         } catch (\ReflectionException $e) {
@@ -66,21 +64,32 @@ class NodeDataTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        $className = $this->nodeDiscriminator->getClassNameForDiscriminator($value['_node_discr']);
+        $className = $this->nodeDiscriminator->getClassNameForDiscriminator($value[$this->discriminatorField]);
 
-        if (!empty($value['_node_id'])) {
-            $element = $this->nodeDiscriminator->findObjectById($className, $value['_node_id']);
+        if (!empty($value[$this->idField])) {
+            $element = $this->nodeDiscriminator->findObjectById($className, $value[$this->idField]);
 
             if (!$element) {
-                throw new TransformationFailedException(sprintf('Failed transformation for class "%s" for element with id %u', $className, $value['_node_id']));
+                throw new TransformationFailedException(sprintf('Failed transformation for class "%s" for element with id %u', $className, $value[$this->idField]));
             }
+        } elseif ($className == 'array') {
+            $element = [];
         } else {
             $element = new $className();
         }
 
         $data = $value;
-        unset($data['_node_id']);
-        unset($data['_node_discr']);
+        unset($data[$this->idField]);
+
+        if (is_array($element)) {
+            foreach ($data as $field => $fieldValue) {
+                $element[$field] = $fieldValue;
+            }
+
+            return $element;
+        }
+
+        unset($data[$this->discriminatorField]);
 
         try {
             $reflection = new \ReflectionClass($element);

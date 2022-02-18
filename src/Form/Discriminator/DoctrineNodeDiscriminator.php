@@ -7,45 +7,27 @@ use Symfony\Component\Form\Exception\RuntimeException;
 
 class DoctrineNodeDiscriminator extends NodeDiscriminator
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $em;
+    protected EntityManagerInterface $em;
 
-    /**
-     * @var string
-     */
-    protected $abstractClass;
+    protected string $abstractClass;
 
-    /**
-     * DoctrineNodeDiscriminator constructor.
-     */
-    public function __construct(EntityManagerInterface $em, array $formTypeDiscriminatorMap, string $abstractClass)
+    public function __construct(EntityManagerInterface $em, array $formTypeDiscriminatorMap, string $abstractClass, array $formTypeOptions)
     {
-        parent::__construct([], $formTypeDiscriminatorMap);
+        parent::__construct([], $formTypeDiscriminatorMap, $formTypeOptions);
         $this->em = $em;
         $this->abstractClass = $abstractClass;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscriminatorForObject($object)
+    public function getDiscriminatorForObject($object): string
     {
         return $this->em->getClassMetadata(get_class($object))->discriminatorValue;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassNameForDiscriminator($discriminator)
+    public function getClassNameForDiscriminator($discriminator): string
     {
         return $this->em->getClassMetadata($this->abstractClass)->discriminatorMap[$discriminator];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdFieldForObject($object)
     {
         $classMetadata = $this->em->getClassMetadata(get_class($object));
@@ -59,10 +41,7 @@ class DoctrineNodeDiscriminator extends NodeDiscriminator
         return $idField;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findObjectById($className, $id)
+    public function findObjectById($className, $id): ?object
     {
         return $this->em->find($className, $id);
     }

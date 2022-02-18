@@ -6,37 +6,25 @@ use Symfony\Component\Form\Exception\RuntimeException;
 
 class NodeDiscriminator implements NodeDiscriminatorInterface
 {
-    /**
-     * @var array
-     */
-    protected $objectDiscriminatorMap;
+    protected array $objectDiscriminatorMap;
 
-    /**
-     * @var array
-     */
-    protected $formTypeDiscriminatorMap;
+    protected array $formTypeDiscriminatorMap;
 
-    /**
-     * NodeDiscriminator constructor.
-     */
-    public function __construct(array $objectDiscriminatorMap, array $formTypeDiscriminatorMap)
+    protected array $formTypeOptions;
+
+    public function __construct(array $objectDiscriminatorMap, array $formTypeDiscriminatorMap, array $formTypeOptions)
     {
         $this->objectDiscriminatorMap = $objectDiscriminatorMap;
         $this->formTypeDiscriminatorMap = $formTypeDiscriminatorMap;
+        $this->formTypeOptions = $formTypeOptions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFormTypeDiscriminatorMap()
+    public function getFormTypeDiscriminatorMap(): array
     {
         return $this->formTypeDiscriminatorMap;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscriminatorForObject($object)
+    public function getDiscriminatorForObject($object): string
     {
         // search for discriminator key in discriminators map
         $discr = array_search(get_class($object), $this->objectDiscriminatorMap);
@@ -55,35 +43,28 @@ class NodeDiscriminator implements NodeDiscriminatorInterface
         return $discr;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdFieldForObject($object)
     {
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findObjectById($className, $id)
+    public function findObjectById($className, $id): ?object
     {
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassNameForDiscriminator($discriminator)
+    public function getClassNameForDiscriminator($discriminator): string
     {
         return $this->objectDiscriminatorMap[$discriminator];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFormTypeFromDiscriminator($discriminator)
+    public function getFormTypeFromDiscriminator($discriminator): string
     {
         return $this->formTypeDiscriminatorMap[$discriminator];
+    }
+
+    public function getFormTypeOptionsFromDiscriminator(string $discriminator): array
+    {
+        return $this->formTypeOptions[$discriminator] ?? [];
     }
 }

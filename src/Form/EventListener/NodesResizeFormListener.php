@@ -11,33 +11,24 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 
-/**
- * Class NodesResizeFormListener.
- */
 class NodesResizeFormListener implements EventSubscriberInterface
 {
-    /**
-     * @var NodeDiscriminatorInterface
-     */
-    protected $nodeDiscriminator;
+    protected NodeDiscriminatorInterface $nodeDiscriminator;
 
-    /**
-     * @var DataTransformerInterface
-     */
-    protected $transformer;
+    protected DataTransformerInterface $transformer;
 
-    /**
-     * NodesResizeFormListener constructor.
-     */
-    public function __construct(NodeDiscriminatorInterface $nodeDiscriminator, DataTransformerInterface $transformer)
+    protected string $discriminatorField;
+
+    protected ?string $idField;
+
+    public function __construct(NodeDiscriminatorInterface $nodeDiscriminator, DataTransformerInterface $transformer, string $discriminatorField, ?string $idField)
     {
         $this->nodeDiscriminator = $nodeDiscriminator;
         $this->transformer = $transformer;
+        $this->discriminatorField = $discriminatorField;
+        $this->idField = $idField;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -75,19 +66,18 @@ class NodesResizeFormListener implements EventSubscriberInterface
         }
 
         foreach ($nodes as $i => $node) {
-            if ($node['_node_id']) {
+            if ($this->idField && $node[$this->idField]) {
                 continue;
             }
 
-            $this->addSubform($i, $node['_node_discr'], $form);
+            $this->addSubform($i, $node[$this->discriminatorField], $form);
         }
     }
 
     /**
-     * @param mixed  $name
-     * @param string $discr
+     * @param mixed $name
      */
-    protected function addSubform($name, $discr, FormInterface $form)
+    protected function addSubform($name, string $discr, FormInterface $form)
     {
         $formClass = $this->nodeDiscriminator->getFormTypeFromDiscriminator($discr);
 
@@ -95,9 +85,13 @@ class NodesResizeFormListener implements EventSubscriberInterface
             throw new RuntimeException(sprintf('No form type was found for %s discriminator value', $discr));
         }
 
-        $formOptions = [
+        $formOptions = $this->nodeDiscriminator->getFormTypeOptionsFromDiscriminator($discr);
+
+        $formOptions += [
             'node_data_transformer' => $this->transformer,
             'error_bubbling' => false,
+            'discriminator_field' => $this->discriminatorField,
+            'id_field' => $this->idField,
         ];
 
         /* @var AbstractType $formType */

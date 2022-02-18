@@ -30,6 +30,8 @@ abstract class AbstractNodeType extends AbstractType
             'prototype_button_attr' => [],
             'node_data_transformer' => null,
             'error_bubbling' => false,
+            'discriminator_field' => '_node_discr',
+            'id_field' => null,
         ]);
 
         $this->configureChildOptions($resolver);
@@ -53,8 +55,11 @@ abstract class AbstractNodeType extends AbstractType
             throw new InvalidConfigurationException('AbstractNodeType requires no data_class to be defined in child types');
         }
 
-        $builder->add('_node_id', HiddenType::class);
-        $builder->add('_node_discr', HiddenType::class);
+        if ($options['id_field']) {
+            $builder->add($options['id_field'], HiddenType::class);
+        }
+
+        $builder->add($options['discriminator_field'], HiddenType::class);
 
         $this->buildChildForm($builder, $options);
 

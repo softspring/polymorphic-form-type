@@ -4,44 +4,23 @@ namespace Softspring\PolymorphicFormType\Form\Discriminator;
 
 interface NodeDiscriminatorInterface
 {
-    /**
-     * @return array
-     */
-    public function getFormTypeDiscriminatorMap();
+    public function getFormTypeDiscriminatorMap(): array;
+
+    public function getDiscriminatorForObject(object $object): string;
+
+    public function getClassNameForDiscriminator(string $discriminator): string;
+
+    public function getFormTypeFromDiscriminator(string $discriminator): string;
+
+    public function getFormTypeOptionsFromDiscriminator(string $discriminator): array;
 
     /**
-     * @param object $object
-     *
-     * @return string
-     */
-    public function getDiscriminatorForObject($object);
-
-    /**
-     * @param string $discriminator
-     *
-     * @return string
-     */
-    public function getClassNameForDiscriminator($discriminator);
-
-    /**
-     * @param string $discriminator
-     *
-     * @return string
-     */
-    public function getFormTypeFromDiscriminator($discriminator);
-
-    /**
-     * @param object $object
-     *
      * @return mixed|null
      */
-    public function getIdFieldForObject($object);
+    public function getIdFieldForObject(object $object);
 
     /**
-     * @param string $className
      * @param mixed  $id
-     *
-     * @return object
      */
-    public function findObjectById($className, $id);
+    public function findObjectById(string $className, $id): ?object;
 }
