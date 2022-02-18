@@ -80,6 +80,7 @@ class PolymorphicCollectionType extends AbstractType
 
             $formOptions = $options['types_options'][$discr] ?? [];
             $formOptions['discriminator_field'] = $options['discriminator_field'];
+            $formOptions['id_field'] = $options['id_field'];
 
             $prototypeForm = $this->getFormFactory($options)->createNamedBuilder($options['prototype_name'], $formType, null, $formOptions)->getForm();
             $prototypeForm->get($options['discriminator_field'])->setData($discr);
