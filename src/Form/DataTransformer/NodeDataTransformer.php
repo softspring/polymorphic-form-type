@@ -30,6 +30,10 @@ class NodeDataTransformer implements DataTransformerInterface
             return null;
         }
 
+        if (is_array($value)) {
+            return $value;
+        }
+
         $data = [];
 
         try {

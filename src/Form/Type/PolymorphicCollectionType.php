@@ -117,7 +117,7 @@ class PolymorphicCollectionType extends AbstractType
             throw new RuntimeException('discriminator_map must be set');
         }
 
-        $discriminator = new NodeDiscriminator($options['discriminator_map'], $options['types_map'], $options['types_options']);
+        $discriminator = new NodeDiscriminator($options['discriminator_map'], $options['types_map'], $options['types_options'], $options['discriminator_field']);
         $transformer = new NodeDataTransformer($discriminator, $options['discriminator_field'], $options['id_field']);
         $builder->addEventSubscriber(new NodesResizeFormListener($discriminator, $transformer, $options['discriminator_field'], $options['id_field']));
     }

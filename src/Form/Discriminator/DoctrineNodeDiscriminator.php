@@ -11,9 +11,9 @@ class DoctrineNodeDiscriminator extends NodeDiscriminator
 
     protected string $abstractClass;
 
-    public function __construct(EntityManagerInterface $em, array $formTypeDiscriminatorMap, string $abstractClass, array $formTypeOptions)
+    public function __construct(EntityManagerInterface $em, array $formTypeDiscriminatorMap, string $abstractClass, array $formTypeOptions, ?string $discriminatorField)
     {
-        parent::__construct([], $formTypeDiscriminatorMap, $formTypeOptions);
+        parent::__construct([], $formTypeDiscriminatorMap, $formTypeOptions, $discriminatorField);
         $this->em = $em;
         $this->abstractClass = $abstractClass;
     }

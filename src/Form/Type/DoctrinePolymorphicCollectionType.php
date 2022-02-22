@@ -69,7 +69,7 @@ class DoctrinePolymorphicCollectionType extends PolymorphicCollectionType
     protected function configureResizeEventSubscriber(FormBuilderInterface $builder, array $options)
     {
         $em = $this->getEntityManager($options);
-        $discriminator = new DoctrineNodeDiscriminator($em, $options['types_map'], $options['abstract_class'], $options['types_options']);
+        $discriminator = new DoctrineNodeDiscriminator($em, $options['types_map'], $options['abstract_class'], $options['types_options'], $options['discriminator_field']);
         $transformer = new NodeDataTransformer($discriminator, $options['discriminator_field'], $options['id_field']);
         $builder->addEventSubscriber(new NodesResizeFormListener($discriminator, $transformer, $options['discriminator_field'], $options['id_field']));
     }

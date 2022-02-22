@@ -12,11 +12,14 @@ class NodeDiscriminator implements NodeDiscriminatorInterface
 
     protected array $formTypeOptions;
 
-    public function __construct(array $objectDiscriminatorMap, array $formTypeDiscriminatorMap, array $formTypeOptions)
+    protected ?string $discriminatorField;
+
+    public function __construct(array $objectDiscriminatorMap, array $formTypeDiscriminatorMap, array $formTypeOptions, ?string $discriminatorField)
     {
         $this->objectDiscriminatorMap = $objectDiscriminatorMap;
         $this->formTypeDiscriminatorMap = $formTypeDiscriminatorMap;
         $this->formTypeOptions = $formTypeOptions;
+        $this->discriminatorField = $discriminatorField;
     }
 
     public function getFormTypeDiscriminatorMap(): array
@@ -27,7 +30,11 @@ class NodeDiscriminator implements NodeDiscriminatorInterface
     public function getDiscriminatorForObject($object): string
     {
         // search for discriminator key in discriminators map
-        $discr = array_search(get_class($object), $this->objectDiscriminatorMap);
+        if (is_object($object)) {
+            $discr = array_search(get_class($object), $this->objectDiscriminatorMap);
+        } elseif (is_array($object) && $this->discriminatorField) {
+            $discr = $object[$this->discriminatorField];
+        }
 
         if (empty($discr)) {
             throw new RuntimeException(sprintf('The class "%s" is not present in discriminator map', get_class($object)));
