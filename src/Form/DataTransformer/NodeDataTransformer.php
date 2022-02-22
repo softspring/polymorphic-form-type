@@ -72,7 +72,7 @@ class NodeDataTransformer implements DataTransformerInterface
             if (!$element) {
                 throw new TransformationFailedException(sprintf('Failed transformation for class "%s" for element with id %u', $className, $value[$this->idField]));
             }
-        } elseif ($className == 'array') {
+        } elseif ('array' == $className) {
             $element = [];
         } else {
             $element = new $className();

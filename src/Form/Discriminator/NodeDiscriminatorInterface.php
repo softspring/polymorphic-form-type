@@ -20,7 +20,7 @@ interface NodeDiscriminatorInterface
     public function getIdFieldForObject(object $object);
 
     /**
-     * @param mixed  $id
+     * @param mixed $id
      */
     public function findObjectById(string $className, $id): ?object;
 }
