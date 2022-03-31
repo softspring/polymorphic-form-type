@@ -1,8 +1,8 @@
 <?php
 
-namespace Softspring\PolymorphicFormType\Form\EventListener;
+namespace Softspring\Component\PolymorphicFormType\Form\EventListener;
 
-use Softspring\PolymorphicFormType\Form\Discriminator\NodeDiscriminatorInterface;
+use Softspring\Component\PolymorphicFormType\Form\Discriminator\NodeDiscriminatorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;

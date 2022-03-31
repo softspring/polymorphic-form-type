@@ -1,8 +1,8 @@
 <?php
 
-namespace Softspring\PolymorphicFormType\Form\DataTransformer;
+namespace Softspring\Component\PolymorphicFormType\Form\DataTransformer;
 
-use Softspring\PolymorphicFormType\Form\Discriminator\NodeDiscriminator;
+use Softspring\Component\PolymorphicFormType\Form\Discriminator\NodeDiscriminator;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 

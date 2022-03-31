@@ -1,16 +1,16 @@
 <?php
 
-namespace Softspring\PolymorphicFormType\Tests\Example1\Form;
+namespace Softspring\Component\PolymorphicFormType\Tests\Example1\Form;
 
-use Softspring\PolymorphicFormType\Form\Type\PolymorphicCollectionType;
-use Softspring\PolymorphicFormType\Tests\Example1\Form\Type\CategoryPropertyType;
-use Softspring\PolymorphicFormType\Tests\Example1\Form\Type\SizePropertyType;
-use Softspring\PolymorphicFormType\Tests\Example1\Form\Type\WeightPropertyType;
-use Softspring\PolymorphicFormType\Tests\Example1\Model\Entity;
-use Softspring\PolymorphicFormType\Tests\Example1\Model\Properties\AbstractProperty;
-use Softspring\PolymorphicFormType\Tests\Example1\Model\Properties\Category;
-use Softspring\PolymorphicFormType\Tests\Example1\Model\Properties\Size;
-use Softspring\PolymorphicFormType\Tests\Example1\Model\Properties\Weight;
+use Softspring\Component\PolymorphicFormType\Form\Type\PolymorphicCollectionType;
+use Softspring\Component\PolymorphicFormType\Tests\Example1\Form\Type\CategoryPropertyType;
+use Softspring\Component\PolymorphicFormType\Tests\Example1\Form\Type\SizePropertyType;
+use Softspring\Component\PolymorphicFormType\Tests\Example1\Form\Type\WeightPropertyType;
+use Softspring\Component\PolymorphicFormType\Tests\Example1\Model\Entity;
+use Softspring\Component\PolymorphicFormType\Tests\Example1\Model\Properties\AbstractProperty;
+use Softspring\Component\PolymorphicFormType\Tests\Example1\Model\Properties\Category;
+use Softspring\Component\PolymorphicFormType\Tests\Example1\Model\Properties\Size;
+use Softspring\Component\PolymorphicFormType\Tests\Example1\Model\Properties\Weight;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

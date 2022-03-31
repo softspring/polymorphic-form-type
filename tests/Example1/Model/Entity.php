@@ -1,9 +1,9 @@
 <?php
 
-namespace Softspring\PolymorphicFormType\Tests\Example1\Model;
+namespace Softspring\Component\PolymorphicFormType\Tests\Example1\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Softspring\PolymorphicFormType\Tests\Example1\Model\Properties\AbstractProperty;
+use Softspring\Component\PolymorphicFormType\Tests\Example1\Model\Properties\AbstractProperty;
 
 class Entity
 {

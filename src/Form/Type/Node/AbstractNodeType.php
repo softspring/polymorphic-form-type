@@ -1,6 +1,6 @@
 <?php
 
-namespace Softspring\PolymorphicFormType\Form\Type\Node;
+namespace Softspring\Component\PolymorphicFormType\Form\Type\Node;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;

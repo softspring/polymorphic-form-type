@@ -14,12 +14,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Softspring\\PolymorphicFormType\\": "src/"
+            "Softspring\\Component\\PolymorphicFormType\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Softspring\\PolymorphicFormType\\Tests\\": "tests/"
+            "Softspring\\Component\\PolymorphicFormType\\Tests\\": "tests/"
         }
     },
     "extra": {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Softspring\PolymorphicFormType\Tests\Example1\Form\Type;
+namespace Softspring\Component\PolymorphicFormType\Tests\Example1\Form\Type;
 
-use Softspring\PolymorphicFormType\Form\Type\Node\AbstractNodeType;
+use Softspring\Component\PolymorphicFormType\Form\Type\Node\AbstractNodeType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class WeightPropertyType extends AbstractNodeType

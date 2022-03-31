@@ -1,6 +1,6 @@
 <?php
 
-namespace Softspring\PolymorphicFormType\Tests\Example1\Model\Properties;
+namespace Softspring\Component\PolymorphicFormType\Tests\Example1\Model\Properties;
 
 class Size extends AbstractProperty
 {

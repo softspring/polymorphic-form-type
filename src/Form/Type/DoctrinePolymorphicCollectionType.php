@@ -1,11 +1,11 @@
 <?php
 
-namespace Softspring\PolymorphicFormType\Form\Type;
+namespace Softspring\Component\PolymorphicFormType\Form\Type;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Softspring\PolymorphicFormType\Form\DataTransformer\NodeDataTransformer;
-use Softspring\PolymorphicFormType\Form\Discriminator\DoctrineNodeDiscriminator;
-use Softspring\PolymorphicFormType\Form\EventListener\NodesResizeFormListener;
+use Softspring\Component\PolymorphicFormType\Form\DataTransformer\NodeDataTransformer;
+use Softspring\Component\PolymorphicFormType\Form\Discriminator\DoctrineNodeDiscriminator;
+use Softspring\Component\PolymorphicFormType\Form\EventListener\NodesResizeFormListener;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
