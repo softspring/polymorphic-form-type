@@ -26,7 +26,7 @@
                 <{{ element|default('label') }}{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>{{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}</{{ element|default('label') }}>
             {%- endif -%}
         </div>
-        <div class="col-sm-6 text-right">
+        <div class="col-sm-6 text-end">
             {{ block('polymorphic_prototype_buttons') }}
         </div>
     </div>
