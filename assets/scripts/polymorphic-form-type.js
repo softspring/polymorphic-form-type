@@ -7,6 +7,7 @@
         var $nodes = $removeRow.parent().find('.node-row');
         var nodes = $nodes.length;
 
+        $removeRow.get(0).dispatchEvent(new Event('remove_polymorphic_node', {bubbles: true}));
         $removeRow.remove();
 
         // custom for this
@@ -34,6 +35,8 @@
 
         // append node to form
         $collection.append($newRow);
+
+        $newRow.get(0).dispatchEvent(new Event('add_polymorphic_node', {bubbles: true}));
 
         $collection.find('.remove_polymorphic_node').show();
     }
