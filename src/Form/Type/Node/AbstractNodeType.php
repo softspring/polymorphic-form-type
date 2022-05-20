@@ -98,6 +98,7 @@ abstract class AbstractNodeType extends AbstractType
     {
         $this->finishChildView($view, $form, $options);
         $view->vars['attr']['data-index'] = $view->vars['name'];
+        $view->vars['attr']['data-full-name'] = $view->vars['full_name'];
         $view->vars['prototype_button_label'] = $options['prototype_button_label'];
         $view->vars['prototype_button_attr'] = $options['prototype_button_attr'];
     }

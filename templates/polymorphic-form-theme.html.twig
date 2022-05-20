@@ -60,6 +60,6 @@
 {%- block polymorphic_prototype_button_attributes -%}
     data-collection="#{{ id }}" data-prototype-name="{{ prototype.vars.name }}" data-prototype="{{ form_row(prototype)|escape }}"
     {% set attr = prototype.vars.prototype_button_attr %}
-    {% set attr = attr | merge({'class': attr.class|default('') ~ ' add_polymorphic_node'}) %}
+    {% set attr = attr | merge({'class': attr.class|default('') ~ ' polymorphic-add-button'}) %}
     {{ block('attributes') }}
 {%- endblock polymorphic_prototype_button_attributes -%}
