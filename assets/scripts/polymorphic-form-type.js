@@ -58,6 +58,12 @@
 
         $newRow.get(0).dispatchEvent(new Event('add_polymorphic_node', {bubbles: true}));
 
+        // element which needs to be scrolled to
+        let id = $newRow.attr('id'),
+            element = document.querySelector("#"+id)
+        // scroll to element
+        element.scrollIntoView();
+
         updateCollectionButtons($collection);
     }
 
