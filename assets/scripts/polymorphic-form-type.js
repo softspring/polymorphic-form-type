@@ -21,14 +21,16 @@
 
     $(document).on('click', '.polymorphic-down-node-button', function(event){
         event.preventDefault();
+        document.dispatchEvent(new Event('cms.module.move.down.before'));
         var $nodeRow = $(event.target).closest('.polymorphic-node-row');
         var $collection = $nodeRow.closest('.polymorphic-collection-widget');
         moveDownNode($collection, $nodeRow);
-      document.dispatchEvent(new Event('cms.module.move.down'));
+        document.dispatchEvent(new Event('cms.module.move.down'));
     })
 
     $(document).on('click', '.polymorphic-up-node-button', function(event){
         event.preventDefault();
+        document.dispatchEvent(new Event('cms.module.move.up.before'));
 
         var $nodeRow = $(event.target).closest('.polymorphic-node-row');
         var $collection = $nodeRow.closest('.polymorphic-collection-widget');
