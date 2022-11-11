@@ -109,7 +109,7 @@
 
     function getPolymorphicCollectionLastIndex($collection)
     {
-        return parseInt($collection.children('.polymorphic-node-row').last().data('index'));
+        return parseInt($collection.children('.polymorphic-node-row').last().attr('data-index')); //NOT USE .data('index')
     }
 
     // init
