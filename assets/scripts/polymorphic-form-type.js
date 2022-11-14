@@ -5,37 +5,47 @@
 
     $(document).on('click', '.polymorphic-add-button', function(event){
         event.preventDefault();
-        var $addNodeLink = $(this);
+        var $addNodeLink = $(this),
+            addNodeLink = this;
         var $collection = $($addNodeLink.data('collection'));
         var prototypeName = $addNodeLink.data('prototype-name');
         var prototype = $addNodeLink.data('prototype');
-        addPolymorphicNode($collection, prototypeName, prototype);
+        document.dispatchEvent(new CustomEvent('cms.module.add.before', { "detail": {"module":newModule } }));
+        const newModule = addPolymorphicNode($collection, prototypeName, prototype);
+        document.dispatchEvent(new CustomEvent('cms.module.add', { "detail": {"module":newModule } }));
     });
 
     $(document).on('click', '.polymorphic-remove-node-button', function(event){
         event.preventDefault();
-        var $nodeRow = $(this).closest('.polymorphic-node-row');
-        var $collection = $nodeRow.closest('.polymorphic-collection-widget')
+        const nodeButton = this,
+              newModule = nodeButton.closest('.polymorphic-node-row'),
+              $nodeRow = $(event.target).closest('.polymorphic-node-row'),
+              $collection = $nodeRow.closest('.polymorphic-collection-widget');
+        document.dispatchEvent(new CustomEvent('cms.module.remove.before', { "detail": {"module":newModule } }));
         removePolymorphicNodeRow($collection, $nodeRow);
+        document.dispatchEvent(new CustomEvent('cms.module.remove', { "detail": {"module":newModule } }));
     });
 
     $(document).on('click', '.polymorphic-down-node-button', function(event){
         event.preventDefault();
-        document.dispatchEvent(new Event('cms.module.move.down.before'));
-        var $nodeRow = $(event.target).closest('.polymorphic-node-row');
-        var $collection = $nodeRow.closest('.polymorphic-collection-widget');
+        const nodeButton = this,
+              newModule = nodeButton.closest('.polymorphic-node-row'),
+              $nodeRow = $(event.target).closest('.polymorphic-node-row'),
+              $collection = $nodeRow.closest('.polymorphic-collection-widget');
+        document.dispatchEvent(new CustomEvent('cms.module.move.down.before', { "detail": {"module":newModule } }));
         moveDownNode($collection, $nodeRow);
-        document.dispatchEvent(new Event('cms.module.move.down'));
+        document.dispatchEvent(new CustomEvent('cms.module.move.down', { "detail": {"module":newModule } }));
     })
 
     $(document).on('click', '.polymorphic-up-node-button', function(event){
         event.preventDefault();
-        document.dispatchEvent(new Event('cms.module.move.up.before'));
-
-        var $nodeRow = $(event.target).closest('.polymorphic-node-row');
-        var $collection = $nodeRow.closest('.polymorphic-collection-widget');
+        const nodeButton = this,
+              newModule = nodeButton.closest('.polymorphic-node-row'),
+              $nodeRow = $(event.target).closest('.polymorphic-node-row'),
+              $collection = $nodeRow.closest('.polymorphic-collection-widget');
+        document.dispatchEvent(new CustomEvent('cms.module.move.up.before', { "detail": {"module":newModule } }));
         moveUpNode($collection, $nodeRow);
-        document.dispatchEvent(new Event('cms.module.move.up'));
+        document.dispatchEvent(new CustomEvent('cms.module.move.up', { "detail": {"module":newModule } }));
     });
 
     $(document).on('change', '.polymorphic-node-row input', function(event){
@@ -68,6 +78,7 @@
         element.scrollIntoView();
 
         updateCollectionButtons($collection);
+        return element;
     }
 
     function moveUpNode($collection, $nodeRow)
