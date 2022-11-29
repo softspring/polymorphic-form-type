@@ -10,9 +10,9 @@
         var $collection = $($addNodeLink.data('collection'));
         var prototypeName = $addNodeLink.data('prototype-name');
         var prototype = $addNodeLink.data('prototype');
-        document.dispatchEvent(new CustomEvent('cms.module.add.before', { "detail": {"module":newModule } }));
+        document.dispatchEvent(new CustomEvent('polymorphic.add.before', { "detail": {"module":newModule } }));
         const newModule = addPolymorphicNode($collection, prototypeName, prototype);
-        document.dispatchEvent(new CustomEvent('cms.module.add', { "detail": {"module":newModule } }));
+        document.dispatchEvent(new CustomEvent('polymorphic.add', { "detail": {"module":newModule } }));
     });
 
     $(document).on('click', '.polymorphic-remove-node-button', function(event){
@@ -21,9 +21,9 @@
               newModule = nodeButton.closest('.polymorphic-node-row'),
               $nodeRow = $(event.target).closest('.polymorphic-node-row'),
               $collection = $nodeRow.closest('.polymorphic-collection-widget');
-        document.dispatchEvent(new CustomEvent('cms.module.remove.before', { "detail": {"module":newModule } }));
+        document.dispatchEvent(new CustomEvent('polymorphic.remove.before', { "detail": {"module":newModule } }));
         removePolymorphicNodeRow($collection, $nodeRow);
-        document.dispatchEvent(new CustomEvent('cms.module.remove', { "detail": {"module":newModule } }));
+        document.dispatchEvent(new CustomEvent('polymorphic.remove', { "detail": {"module":newModule } }));
     });
 
     $(document).on('click', '.polymorphic-down-node-button', function(event){
@@ -32,9 +32,9 @@
               newModule = nodeButton.closest('.polymorphic-node-row'),
               $nodeRow = $(event.target).closest('.polymorphic-node-row'),
               $collection = $nodeRow.closest('.polymorphic-collection-widget');
-        document.dispatchEvent(new CustomEvent('cms.module.move.down.before', { "detail": {"module":newModule } }));
+        document.dispatchEvent(new CustomEvent('polymorphic.move.down.before', { "detail": {"module":newModule } }));
         moveDownNode($collection, $nodeRow);
-        document.dispatchEvent(new CustomEvent('cms.module.move.down', { "detail": {"module":newModule } }));
+        document.dispatchEvent(new CustomEvent('polymorphic.move.down', { "detail": {"module":newModule } }));
     })
 
     $(document).on('click', '.polymorphic-up-node-button', function(event){
@@ -43,9 +43,9 @@
               newModule = nodeButton.closest('.polymorphic-node-row'),
               $nodeRow = $(event.target).closest('.polymorphic-node-row'),
               $collection = $nodeRow.closest('.polymorphic-collection-widget');
-        document.dispatchEvent(new CustomEvent('cms.module.move.up.before', { "detail": {"module":newModule } }));
+        document.dispatchEvent(new CustomEvent('polymorphic.move.up.before', { "detail": {"module":newModule } }));
         moveUpNode($collection, $nodeRow);
-        document.dispatchEvent(new CustomEvent('cms.module.move.up', { "detail": {"module":newModule } }));
+        document.dispatchEvent(new CustomEvent('polymorphic.move.up', { "detail": {"module":newModule } }));
     });
 
     $(document).on('change', '.polymorphic-node-row input', function(event){
