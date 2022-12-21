@@ -4,7 +4,6 @@ namespace Softspring\Component\PolymorphicFormType\Form\EventListener;
 
 use Softspring\Component\PolymorphicFormType\Form\Discriminator\NodeDiscriminatorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\FormEvent;

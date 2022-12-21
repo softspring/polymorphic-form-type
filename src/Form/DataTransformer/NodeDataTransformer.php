@@ -112,7 +112,7 @@ class NodeDataTransformer implements DataTransformerInterface
 
             return $element;
         } catch (\ReflectionException $e) {
-            /** @var object|array $value */
+            /* @var object|array $value */
             throw new TransformationFailedException(sprintf('The "%s" class not exists', is_object($value) ? get_class($value) : $value));
         }
     }
