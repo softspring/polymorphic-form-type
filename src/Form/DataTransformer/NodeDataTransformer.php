@@ -20,11 +20,11 @@ class NodeDataTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param object $value
+     * @param ?mixed $value
      *
-     * @return array
+     * @return ?array
      */
-    public function transform($value)
+    public function transform(mixed $value)
     {
         if (null === $value) {
             return null;
@@ -64,7 +64,7 @@ class NodeDataTransformer implements DataTransformerInterface
     /**
      * @param array $value
      *
-     * @return object
+     * @return object|array
      */
     public function reverseTransform($value)
     {
@@ -100,19 +100,19 @@ class NodeDataTransformer implements DataTransformerInterface
 
             foreach ($data as $field => $fieldValue) {
                 $setterName = 'set'.ucfirst($field);
-                if ($reflection->hasMethod($setterName) || $reflection->getParentClass() && $reflection->hasMethod($setterName)) {
+                if ($reflection->hasMethod($setterName) || ($reflection->getParentClass() && $reflection->hasMethod($setterName))) {
                     $method = $reflection->getMethod($setterName);
                     $method->invoke($element, $fieldValue);
                 } elseif ($reflection->hasProperty($field) && $reflection->getProperty($field)->isPublic()) {
                     $element->$field = $fieldValue;
-                } else {
-                    // skip field
-                    // throw new TransformationFailedException(sprintf('The "%s" class has not a "%s" method', $className, $setterName));
                 }
+                // else skip field
+                // throw new TransformationFailedException(sprintf('The "%s" class has not a "%s" method', $className, $setterName));
             }
 
             return $element;
         } catch (\ReflectionException $e) {
+            /** @var object|array $value */
             throw new TransformationFailedException(sprintf('The "%s" class not exists', is_object($value) ? get_class($value) : $value));
         }
     }

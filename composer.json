@@ -10,6 +10,8 @@
         "symfony/form": "^5.4|^6.0"
     },
     "require-dev": {
+        "doctrine/orm": "^2.11",
+        "phpstan/phpstan": "^1.9",
         "friendsofphp/php-cs-fixer": "9999999-dev"
     },
     "autoload": {

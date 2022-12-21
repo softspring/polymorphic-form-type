@@ -7,13 +7,10 @@ use Softspring\Component\PolymorphicFormType\Tests\Example1\Model\Properties\Abs
 
 class Entity
 {
-    /**
-     * @var string
-     */
-    public $name;
+    public string $name;
 
     /**
-     * @var AbstractProperty[]
+     * @var AbstractProperty[]|ArrayCollection
      */
     public $properties;
 
