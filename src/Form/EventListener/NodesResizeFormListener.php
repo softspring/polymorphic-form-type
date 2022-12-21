@@ -94,14 +94,6 @@ class NodesResizeFormListener implements EventSubscriberInterface
             'id_field' => $this->idField,
         ];
 
-        /* @var AbstractType $formType */
-        if (is_object($formClass)) {
-            $formType = $formClass;
-        } elseif (is_string($formClass) && class_exists($formClass)) {
-            $formType = $formClass;
-        } else {
-            $formType = $formClass;
-        }
-        $form->add($name, $formType, $formOptions);
+        $form->add($name, $formClass, $formOptions);
     }
 }
