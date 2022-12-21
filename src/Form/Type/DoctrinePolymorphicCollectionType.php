@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DoctrinePolymorphicCollectionType extends PolymorphicCollectionType
 {
-    protected EntityManagerInterface $em;
+    protected ?EntityManagerInterface $em;
 
     public function __construct(FormFactory $formFactory = null, EntityManagerInterface $em = null)
     {

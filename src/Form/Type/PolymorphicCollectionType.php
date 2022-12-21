@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PolymorphicCollectionType extends AbstractType
 {
-    protected FormFactory $formFactory;
+    protected ?FormFactory $formFactory;
 
     public function __construct(FormFactory $formFactory = null)
     {
