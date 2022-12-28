@@ -11,8 +11,8 @@
     },
     "require-dev": {
         "doctrine/orm": "^2.11",
-        "phpstan/phpstan": "^1.9",
-        "friendsofphp/php-cs-fixer": "9999999-dev"
+        "friendsofphp/php-cs-fixer": "9999999-dev",
+        "phpstan/phpstan": "^1.9"
     },
     "autoload": {
         "psr-4": {
@@ -24,6 +24,7 @@
             "Softspring\\Component\\PolymorphicFormType\\Tests\\": "tests/"
         }
     },
-    "extra": {
+    "config": {
+        "sort-packages": true
     }
 }
