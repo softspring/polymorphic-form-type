@@ -1,3 +1,5 @@
+console.warn('DEPRECATED, please use polymorphic-form-type-vanilla.js instead of jquery version. This will be removed soon');
+
 (function($) {
 /* ************************************************************************************************************* *
  * EVENT LISTENERS
