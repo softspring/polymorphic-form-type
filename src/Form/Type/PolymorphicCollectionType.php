@@ -62,6 +62,8 @@ class PolymorphicCollectionType extends AbstractType
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+        $view->vars['prototypes'] = [];
+
         if (!$options['allow_add'] || !$options['prototype']) {
             return;
         }
