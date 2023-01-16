@@ -5,7 +5,7 @@ console.warn('DEPRECATED, please use polymorphic-form-type-vanilla.js instead of
  * EVENT LISTENERS
  * ************************************************************************************************************* */
 
-    $(document).on('click', '.polymorphic-add-button', function(event){
+    $(document).on('click', '[data-polymorphic-action=add]', function(event){
         event.preventDefault();
         var $addNodeLink = $(this),
             addNodeLink = this;
@@ -17,40 +17,40 @@ console.warn('DEPRECATED, please use polymorphic-form-type-vanilla.js instead of
         document.dispatchEvent(new CustomEvent('polymorphic.add', { "detail": {"module":newModule } }));
     });
 
-    $(document).on('click', '.polymorphic-remove-node-button', function(event){
+    $(document).on('click', '[data-polymorphic-action=delete]', function(event){
         event.preventDefault();
         const nodeButton = this,
-              newModule = nodeButton.closest('.polymorphic-node-row'),
-              $nodeRow = $(event.target).closest('.polymorphic-node-row'),
-              $collection = $nodeRow.closest('.polymorphic-collection-widget');
+              newModule = nodeButton.closest('[data-polymorphic=node]'),
+              $node = $(event.target).closest('[data-polymorphic=node]'),
+              $collection = $node.closest('[data-polymorphic=collection]');
         document.dispatchEvent(new CustomEvent('polymorphic.remove.before', { "detail": {"module":newModule } }));
-        removePolymorphicNodeRow($collection, $nodeRow);
+        removePolymorphicNodeRow($collection, $node);
         document.dispatchEvent(new CustomEvent('polymorphic.remove', { "detail": {"module":newModule } }));
     });
 
-    $(document).on('click', '.polymorphic-down-node-button', function(event){
+    $(document).on('click', '[data-polymorphic-action=down]', function(event){
         event.preventDefault();
         const nodeButton = this,
-              newModule = nodeButton.closest('.polymorphic-node-row'),
-              $nodeRow = $(event.target).closest('.polymorphic-node-row'),
-              $collection = $nodeRow.closest('.polymorphic-collection-widget');
+              newModule = nodeButton.closest('[data-polymorphic=node]'),
+              $node = $(event.target).closest('[data-polymorphic=node]'),
+              $collection = $node.closest('[data-polymorphic=collection]');
         document.dispatchEvent(new CustomEvent('polymorphic.move.down.before', { "detail": {"module":newModule } }));
-        moveDownNode($collection, $nodeRow);
+        moveDownNode($collection, $node);
         document.dispatchEvent(new CustomEvent('polymorphic.move.down', { "detail": {"module":newModule } }));
     })
 
-    $(document).on('click', '.polymorphic-up-node-button', function(event){
+    $(document).on('click', '[data-polymorphic-action=up]', function(event){
         event.preventDefault();
         const nodeButton = this,
-              newModule = nodeButton.closest('.polymorphic-node-row'),
-              $nodeRow = $(event.target).closest('.polymorphic-node-row'),
-              $collection = $nodeRow.closest('.polymorphic-collection-widget');
+              newModule = nodeButton.closest('[data-polymorphic=node]'),
+              $node = $(event.target).closest('[data-polymorphic=node]'),
+              $collection = $node.closest('[data-polymorphic=collection]');
         document.dispatchEvent(new CustomEvent('polymorphic.move.up.before', { "detail": {"module":newModule } }));
-        moveUpNode($collection, $nodeRow);
+        moveUpNode($collection, $node);
         document.dispatchEvent(new CustomEvent('polymorphic.move.up', { "detail": {"module":newModule } }));
     });
 
-    $(document).on('change', '.polymorphic-node-row input', function(event){
+    $(document).on('change', '[data-polymorphic=node] input', function(event){
         // store value to prevent loosing it on moving
         var $target = $(event.target);
         $target.attr('value', $target.val());
@@ -83,52 +83,52 @@ console.warn('DEPRECATED, please use polymorphic-form-type-vanilla.js instead of
         return element;
     }
 
-    function moveUpNode($collection, $nodeRow)
+    function moveUpNode($collection, $node)
     {
-        var $prevNodeRow = $nodeRow.prev('.polymorphic-node-row');
+        var $prevNodeRow = $node.prev('[data-polymorphic=node]');
 
         if ($prevNodeRow.length) {
-            $nodeRow.insertBefore($prevNodeRow);
-            modifyIndexes($nodeRow, -1);
+            $node.insertBefore($prevNodeRow);
+            modifyIndexes($node, -1);
             modifyIndexes($prevNodeRow, +1);
         }
 
         updateCollectionButtons($collection);
     }
 
-    function moveDownNode($collection, $nodeRow)
+    function moveDownNode($collection, $node)
     {
-        var $nextNodeRow = $nodeRow.next('.polymorphic-node-row');
+        var $nextNodeRow = $node.next('[data-polymorphic=node]');
 
         if ($nextNodeRow.length) {
-            $nodeRow.insertAfter($nextNodeRow);
-            modifyIndexes($nodeRow, +1);
+            $node.insertAfter($nextNodeRow);
+            modifyIndexes($node, +1);
             modifyIndexes($nextNodeRow, -1);
         }
 
         updateCollectionButtons($collection);
     }
 
-    function removePolymorphicNodeRow($collection, $nodeRow)
+    function removePolymorphicNodeRow($collection, $node)
     {
-        $nodeRow.nextAll('.polymorphic-node-row').each(function (i, nextElement) {
+        $node.nextAll('[data-polymorphic=node]').each(function (i, nextElement) {
             var $nextElement = $(nextElement);
             modifyIndexes($nextElement, -1);
         })
 
-        $nodeRow.get(0).dispatchEvent(new Event('removed_polymorphic_node', {bubbles: true}));
-        $nodeRow.remove();
+        $node.get(0).dispatchEvent(new Event('removed_polymorphic_node', {bubbles: true}));
+        $node.remove();
 
         updateCollectionButtons($collection);
     }
 
     function getPolymorphicCollectionLastIndex($collection)
     {
-        return parseInt($collection.children('.polymorphic-node-row').last().attr('data-index')); //NOT USE .data('index')
+        return parseInt($collection.children('[data-polymorphic=node]').last().attr('data-index')); //NOT USE .data('index')
     }
 
     // init
-    $('.polymorphic-collection-widget').each(function() {
+    $('[data-polymorphic=collection]').each(function() {
         var $collection = $(this);
         updateCollectionButtons($collection);
     });
@@ -139,13 +139,13 @@ console.warn('DEPRECATED, please use polymorphic-form-type-vanilla.js instead of
 
     function updateCollectionButtons($collection)
     {
-        var $nodeRows = $collection.children('.polymorphic-node-row');
+        var $nodes = $collection.children('[data-polymorphic=node]');
 
-        $nodeRows.each(function (i, nodeRow) {
-            var $nodeRow = $(nodeRow);
-            var id = $nodeRow.attr('id');
-            var index = parseInt($nodeRow.attr('data-index'));
-            var lastIndex = $nodeRows.length - 1;
+        $nodes.each(function (i, node) {
+            var $node = $(node);
+            var id = $node.attr('id');
+            var index = parseInt($node.attr('data-index'));
+            var lastIndex = $nodes.length - 1;
 
             if (index===0) {
                 $('#'+id+'_up_node_button').hide();

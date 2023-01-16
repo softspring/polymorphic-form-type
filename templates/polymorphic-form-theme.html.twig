@@ -1,5 +1,5 @@
 {% block polymorphic_collection_row %}
-    <div class="polymorphic-collection">
+    <div>
         {{ form_label(form) }} {# uses: polymorphic_collection_label #}
         {{ form_errors(form) }}
         {{ form_widget(form) }} {# uses: polymorphic_collection_widget #}
@@ -33,7 +33,7 @@
 {% endblock polymorphic_collection_label %}
 
 {% block polymorphic_collection_widget %}
-    {% set attr = attr | merge({'class':'polymorphic-collection-widget'}) %}
+    {% set attr = attr | merge({'data-polymorphic':'collection'}) %}
     <!-- Nodes -->
     <div {{ block('widget_container_attributes') }}>
         {%- if form.parent is empty -%}
@@ -46,7 +46,7 @@
 
 {%- block polymorphic_prototype_buttons -%}
     <!-- Buttons -->
-    <div id="polymorphic_prototypes" class="polymorphic-collection-prototypes">
+    <div id="polymorphic_prototypes" data-polymorphic="prototypes">
         <p class="h2">{{ 'form.tree.polymorphic.prototypes.label'|trans }}</p>
         {% for key, prototype in form.vars.prototypes %}
             <button type="button" class="cursor-pointer" {{ block('polymorphic_prototype_button_attributes') }}>
@@ -58,8 +58,8 @@
 {%- endblock polymorphic_prototype_buttons -%}
 
 {%- block polymorphic_prototype_button_attributes -%}
-    data-collection="#{{ id }}" data-prototype-name="{{ prototype.vars.name }}" data-prototype="{{ form_row(prototype)|escape }}"
+    data-polymorphic-collection="{{ id }}" data-polymorphic-prototype-name="{{ prototype.vars.name }}" data-polymorphic-prototype="{{ form_row(prototype)|escape }}"
     {% set attr = prototype.vars.prototype_button_attr %}
-    {% set attr = attr | merge({'class': attr.class|default('') ~ ' polymorphic-add-button'}) %}
+    {% set attr = attr | merge({'data-polymorphic-action': 'add'}) %}
     {{ block('attributes') }}
 {%- endblock polymorphic_prototype_button_attributes -%}

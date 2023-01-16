@@ -1,242 +1,118 @@
-class AbstractPolymorphicCollectionEvent extends Event {
+class PolymorphicEvent extends Event {
+    _originEvent = undefined;
     _collection = undefined;
-
-    constructor(type, collection) {
-        super(type, { bubbles: true, cancelable: true });
-        this.setCollection(collection);
-    }
-
-    setCollection(collection) {
-        this._collection = collection;
-    }
-
-    collection() {
-        if (this._collection) {
-            return this._collection;
-        } else {
-            return this.target.closest('.polymorphic-collection').querySelector(':scope > .polymorphic-collection-widget');
-        }
-    }
-}
-
-class AbstractPolymorphicCollectionPrototypeNode extends AbstractPolymorphicCollectionEvent {
+    _position = undefined;
+    _node = undefined;
     _prototypeName = undefined;
     _prototype = undefined;
 
-    constructor(type, collection, prototypeName, prototype) {
-        super(type, collection);
-        this.setPrototypeName(prototypeName);
-        this.setPrototype(prototype);
+    constructor(type, originEvent) {
+        super(type, { bubbles: true, cancelable: true });
+        this._originEvent = originEvent;
     }
 
-    setPrototypeName(prototypeName) {
-        this._prototypeName = prototypeName;
+    static create(type, originEvent) {
+        const newEvent = new PolymorphicEvent(type, originEvent);
+
+        if (originEvent._collection !== undefined) {
+            newEvent.collection(originEvent._collection);
+        }
+
+        if (originEvent._node !== undefined) {
+            newEvent.node(originEvent._node);
+        }
+
+        if (originEvent._position !== undefined) {
+            newEvent.position(originEvent._position);
+        }
+
+        if (originEvent._prototype !== undefined) {
+            newEvent.prototype(originEvent._prototype);
+        }
+
+        if (originEvent._prototypeName !== undefined) {
+            newEvent.prototypeName(originEvent._prototypeName);
+        }
+
+        return newEvent;
     }
 
-    setPrototype(prototype) {
-        this._prototype = prototype;
+    originEvent() {
+        return this._originEvent;
     }
 
-    prototypeName() {
+    collection(collection) {
+        if (collection !== undefined) {
+            this._collection = collection;
+        }
+
+        if (this._collection) {
+            return this._collection;
+        } else if (this.target.dataset.polymorphicCollection !== undefined) {
+            return document.getElementById(this.target.dataset.polymorphicCollection);
+        } else {
+            const collection = this.target.closest('[data-polymorphic=collection]');
+
+            if (!collection) {
+                throw 'Collection not found';
+            }
+
+            return collection;
+        }
+    }
+
+    position(position) {
+        if (position !== undefined) {
+            this._position = position;
+        }
+
+        if (this._position !== undefined) {
+            return this._position;
+        } else {
+            throw 'Position was not found';
+        }
+    }
+
+    node(node) {
+        if (node !== undefined) {
+            this._node = node;
+        }
+
+        if (this._node) {
+            return this._node;
+        } else if (event.target.dataset.polymorphicNode !== undefined) {
+            return document.getElementById(event.target.dataset.polymorphicNode);
+        } else {
+            return event.target.closest('[data-polymorphic=node]');
+        }
+    }
+
+    prototypeName(prototypeName) {
+        if (prototypeName !== undefined) {
+            this._prototypeName = prototypeName;
+        }
+
         if (this._prototypeName) {
             return this._prototypeName;
-        } else if (this.target.dataset.polymorphicPrototypeName) {
+        } else if (this.target.dataset.polymorphicPrototypeName !== undefined) {
             return this.target.dataset.polymorphicPrototypeName;
         } else {
             return '__name__';
         }
     }
 
-    prototype() {
+    prototype(prototype) {
+        if (prototype !== undefined) {
+            this._prototype = prototype;
+        }
+
         if (this._prototype) {
             return this._prototype;
-        } else if (this.target.dataset.polymorphicPrototype) {
+        } else if (this.target.dataset.polymorphicPrototype !== undefined) {
             return this.target.dataset.polymorphicPrototype;
         } else {
             throw 'This target does not contains data-polymorphic-prototype attribute, neither was set';
         }
-    }
-}
-
-class AbstractPolymorphicCollectionNode extends AbstractPolymorphicCollectionEvent {
-    _node = undefined;
-
-    constructor(type, collection, node) {
-        super(type, collection);
-        this.setNode(node)
-    }
-
-    setNode(node) {
-        this._node = node;
-    }
-
-    node() {
-        if (this._node) {
-            return this._node;
-        } else if (event.target.dataset.polymorphicNodeRow) {
-            return document.getElementById(event.target.dataset.polymorphicNodeRow);
-        } else {
-            return event.target.closest('.polymorphic-node-row');
-        }
-    }
-}
-
-class PolymorphicCollectionNodeAdd extends AbstractPolymorphicCollectionPrototypeNode {
-    constructor(collection, prototypeName, prototype) {
-        super('polymorphic.node.add', collection, prototypeName, prototype);
-    }
-}
-
-class PolymorphicCollectionNodeAddBefore extends AbstractPolymorphicCollectionPrototypeNode {
-    static createFromNodeAddEvent(event) {
-        return new PolymorphicCollectionNodeAddBefore(event._collection, event._prototypeName, event._prototype);
-    }
-
-    constructor(collection, prototypeName, prototype) {
-        super('polymorphic.node.add.before', collection, prototypeName, prototype);
-    }
-}
-
-class PolymorphicCollectionNodeAddAfter extends AbstractPolymorphicCollectionEvent {
-    _node = undefined;
-    _position = undefined;
-
-    static createFromNodeAddEvent(event, node, position) {
-        return new PolymorphicCollectionNodeAddAfter(event._collection, node, position);
-    }
-
-    constructor(collection, node, position) {
-        super('polymorphic.node.add.after', collection);
-        this.setNode(node);
-        this.setPosition(position);
-    }
-
-    setNode(node) {
-        this._node = node;
-    }
-
-    setPosition(position) {
-        this._position = position;
-    }
-
-    node() {
-        return this._node;
-    }
-
-    position() {
-        return this._position;
-    }
-}
-
-class PolymorphicCollectionNodeDelete extends AbstractPolymorphicCollectionEvent {
-    _node = undefined;
-
-    constructor(collection, node, _type = 'polymorphic.node.delete') {
-        super(_type, collection);
-        this.setNode(node)
-    }
-
-    setNode(node) {
-        this._node = node;
-    }
-
-    node() {
-        if (this._node) {
-            return this._node;
-        } else if (event.target.dataset.polymorphicNodeRow) {
-            return document.getElementById(event.target.dataset.polymorphicNodeRow);
-        } else {
-            return event.target.closest('.polymorphic-node-row');
-        }
-    }
-}
-
-class PolymorphicCollectionNodeDeleteBefore extends PolymorphicCollectionNodeDelete {
-    static createFromNodeDeleteEvent(event) {
-        return new PolymorphicCollectionNodeDeleteBefore(event._collection, event._node);
-    }
-
-    constructor(collection, node) {
-        super(collection, node, 'polymorphic.node.delete.before');
-    }
-}
-
-class PolymorphicCollectionNodeDeleteAfter extends PolymorphicCollectionNodeDelete {
-    static createFromNodeDeleteEvent(event) {
-        return new PolymorphicCollectionNodeDeleteAfter(event.collection(), event._node);
-    }
-
-    constructor(collection, node, position) {
-        super(collection, node, 'polymorphic.node.delete.after');
-    }
-}
-
-class AbstractPolymorphicCollectionNodeMove extends AbstractPolymorphicCollectionNode {
-    _position = undefined;
-
-    constructor(_type, collection, node, position) {
-        super(_type, collection, node);
-        this.setPosition(position);
-    }
-
-    setPosition(position) {
-        this._position = position;
-    }
-
-    position() {
-        return this._position;
-    }
-}
-
-class PolymorphicCollectionNodeUp extends AbstractPolymorphicCollectionNodeMove {
-    constructor(collection, node, position) {
-        super('polymorphic.node.up', collection, node, position);
-    }
-}
-
-class PolymorphicCollectionNodeUpBefore extends AbstractPolymorphicCollectionNodeMove {
-    static createFromNodeUpEvent(event, position) {
-        return new PolymorphicCollectionNodeUpBefore(event.collection(), position);
-    }
-
-    constructor(collection, node, position) {
-        super('polymorphic.node.up.before', collection, node, position);
-    }
-}
-
-class PolymorphicCollectionNodeUpAfter extends AbstractPolymorphicCollectionNodeMove {
-    static createFromNodeUpEvent(event, position) {
-        return new PolymorphicCollectionNodeUpAfter(event.collection(), position);
-    }
-
-    constructor(collection, node, position) {
-        super('polymorphic.node.up.after', collection, node, position);
-    }
-}
-
-class PolymorphicCollectionNodeDown extends AbstractPolymorphicCollectionNodeMove {
-    constructor(collection, node, position) {
-        super('polymorphic.node.down', collection, node, position);
-    }
-}
-
-class PolymorphicCollectionNodeDownBefore extends AbstractPolymorphicCollectionNodeMove {
-    static createFromNodeDownEvent(event, position) {
-        return new PolymorphicCollectionNodeDownBefore(event.collection(), position);
-    }
-
-    constructor(collection, node, position) {
-        super('polymorphic.node.down.before', collection, node, position);
-    }
-}
-
-class PolymorphicCollectionNodeDownAfter extends AbstractPolymorphicCollectionNodeMove {
-    static createFromNodeDownEvent(event, position) {
-        return new PolymorphicCollectionNodeDownAfter(event.collection(), position);
-    }
-
-    constructor(collection, node, position) {
-        super('polymorphic.node.down.after', collection, node, position);
     }
 }
 
@@ -246,23 +122,23 @@ window.addEventListener('load', (event) => {
     document.addEventListener("change", function (event) {
         if (!event.target) return;
 
-        if (event.target.matches('.polymorphic-node-row input[type=radio]')) {
+        if (event.target.matches('[data-polymorphic=node] input[type=radio]')) {
             event.target.setAttribute('checked', event.target.checked ? 'checked' : '');
             return;
         }
 
-        if (event.target.matches('.polymorphic-node-row input[type=checkbox]')) {
+        if (event.target.matches('[data-polymorphic=node] input[type=checkbox]')) {
             event.target.setAttribute('checked', event.target.checked ? 'checked' : '');
             return;
         }
 
-        if (event.target.matches('.polymorphic-node-row select')) {
+        if (event.target.matches('[data-polymorphic=node] select')) {
             [...event.target.options].forEach((option) => option.removeAttribute('selected'));
             event.target.options[event.target.selectedIndex].setAttribute('selected', 'selected');
             return;
         }
 
-        if (event.target.matches('.polymorphic-node-row input')) {
+        if (event.target.matches('[data-polymorphic=node] input')) {
             event.target.setAttribute('value', event.target.value);
         }
     });
@@ -281,64 +157,86 @@ window.addEventListener('load', (event) => {
         }
 
         if (polymorphicActionTarget.dataset.polymorphicAction === 'add') {
-            polymorphicActionTarget.dispatchEvent(new PolymorphicCollectionNodeAdd());
+            polymorphicActionTarget.dispatchEvent(new PolymorphicEvent('polymorphic.node.add', event));
+            return;
         }
 
         if (polymorphicActionTarget.dataset.polymorphicAction === 'insert') {
-            // TODO
+            polymorphicActionTarget.dispatchEvent(new PolymorphicEvent('polymorphic.node.insert', event));
+            return;
         }
 
         if (polymorphicActionTarget.dataset.polymorphicAction === 'delete') {
-            polymorphicActionTarget.dispatchEvent(new PolymorphicCollectionNodeDelete());
+            polymorphicActionTarget.dispatchEvent(new PolymorphicEvent('polymorphic.node.delete', event));
+            return;
         }
 
         if (polymorphicActionTarget.dataset.polymorphicAction === 'up') {
-            polymorphicActionTarget.dispatchEvent(new PolymorphicCollectionNodeUp());
+            polymorphicActionTarget.dispatchEvent(new PolymorphicEvent('polymorphic.node.up', event));
+            return;
         }
 
         if (polymorphicActionTarget.dataset.polymorphicAction === 'down') {
-            polymorphicActionTarget.dispatchEvent(new PolymorphicCollectionNodeDown());
+            polymorphicActionTarget.dispatchEvent(new PolymorphicEvent('polymorphic.node.down', event));
+            return;
         }
+
+        console.error('Invalid polymorphic action: '+polymorphicActionTarget.dataset.polymorphicAction+'. Valid options are: add, insert, delete, up, down');
     });
 
     /**
      * Default polymorphic.node.add event listener
+     * @param {PolymorphicEvent} event
      */
     document.addEventListener("polymorphic.node.add", function (event) {
         event.preventDefault();
 
-        let beforeEvent = PolymorphicCollectionNodeAddBefore.createFromNodeAddEvent(event);
+        let beforeEvent = PolymorphicEvent.create('polymorphic.node.add.before', event);
         event.target.dispatchEvent(beforeEvent);
 
         // do add polymorphic node with beforeEvent returned data
         const newNode = addPolymorphicNode(beforeEvent.collection(), beforeEvent.prototypeName(), beforeEvent.prototype());
 
-        beforeEvent.collection().dispatchEvent(PolymorphicCollectionNodeAddAfter.createFromNodeAddEvent(event, newNode, -1));
+        const afterEvent = PolymorphicEvent.create('polymorphic.node.add.after', beforeEvent);
+        afterEvent.node(newNode);
+        beforeEvent.collection().dispatchEvent(afterEvent);
     });
 
     /**
-     * @param {PolymorphicCollectionNodeAddAfter} event
+     * Default polymorphic.node.insert event listener
+     * @param {PolymorphicEvent} event
      */
-    document.addEventListener("polymorphic.node.add.after", function (event) {
-        updateCollectionButtons(event.collection());
-    });
+    document.addEventListener("polymorphic.node.insert", function (event) {
+        event.preventDefault();
 
-    /**
-     * @param {PolymorphicCollectionNodeAddAfter} event
-     */
-    document.addEventListener("polymorphic.node.add.after", function (event) {
-        event.node().scrollIntoView();
+        let beforeEvent = PolymorphicEvent.create('polymorphic.node.insert.before', event);
+        event.target.dispatchEvent(beforeEvent);
+
+        // do insert polymorphic node with beforeEvent returned data
+        const newNode = insertAfterPolymorphicNode(beforeEvent.collection(), beforeEvent.prototypeName(), beforeEvent.prototype(), beforeEvent.position());
+
+        if (newNode.nextElementSibling) {
+            const nodes = [...beforeEvent.collection().querySelectorAll(':scope > [data-polymorphic=node]')];
+            for (let n = nodes.indexOf(newNode)+1 ; n < nodes.length ; n++) {
+                modifyIndexes(nodes[n], +1);
+            }
+        }
+
+        const afterEvent = PolymorphicEvent.create('polymorphic.node.insert.after', beforeEvent);
+        afterEvent.node(newNode);
+        beforeEvent.collection().dispatchEvent(afterEvent);
     });
 
     /**
      * Default polymorphic.node.delete event listener
+     * @param {PolymorphicEvent} event
      */
     document.addEventListener("polymorphic.node.delete", function (event) {
         event.preventDefault();
 
-        let beforeEvent = PolymorphicCollectionNodeDeleteBefore.createFromNodeDeleteEvent(event);
+        let beforeEvent = PolymorphicEvent.create('polymorphic.node.delete.before', event);
         event.target.dispatchEvent(beforeEvent);
-        let afterEvent = PolymorphicCollectionNodeDeleteAfter.createFromNodeDeleteEvent(event);
+        const afterEvent = PolymorphicEvent.create('polymorphic.node.delete.after', beforeEvent);
 
         // do delete polymorphic node with beforeEvent returned data
         deletePolymorphicNode(beforeEvent.collection(), beforeEvent.node());
@@ -347,157 +245,222 @@ window.addEventListener('load', (event) => {
     });
 
     /**
-     * @param {PolymorphicCollectionNodeDeleteAfter} event
+     * Default polymorphic.node.up event listener
+     * @param {PolymorphicEvent} event
+     */
+    document.addEventListener("polymorphic.node.up", function (event) {
+        event.preventDefault();
+
+        let beforeEvent = PolymorphicEvent.create('polymorphic.node.up.before', event);
+        event.target.dispatchEvent(beforeEvent);
+        beforeEvent.collection(beforeEvent.collection()); // store reference before moving
+
+        // do up polymorphic node with beforeEvent returned data
+        moveUpPolymorphicNode(beforeEvent.collection(), beforeEvent.node());
+
+        const afterEvent = PolymorphicEvent.create('polymorphic.node.up.after', beforeEvent);
+        beforeEvent.collection().dispatchEvent(afterEvent);
+    });
+
+    /**
+     * Default polymorphic.node.down event listener
+     * @param {PolymorphicEvent} event
+     */
+    document.addEventListener("polymorphic.node.down", function (event) {
+        event.preventDefault();
+
+        let beforeEvent = PolymorphicEvent.create('polymorphic.node.down.before', event);
+        event.target.dispatchEvent(beforeEvent);
+        beforeEvent.collection(beforeEvent.collection()); // store reference before moving
+
+        // do up polymorphic node with beforeEvent returned data
+        moveDownPolymorphicNode(beforeEvent.collection(), beforeEvent.node());
+
+        const afterEvent = PolymorphicEvent.create('polymorphic.node.down.after', beforeEvent);
+        beforeEvent.collection().dispatchEvent(afterEvent);
+    });
+
+
+    /**
+     * @param {PolymorphicEvent} event
+     */
+    document.addEventListener("polymorphic.node.add.after", function (event) {
+        updateCollectionButtons(event.collection());
+    });
+
+    /**
+     * @param {PolymorphicEvent} event
+     */
+    document.addEventListener("polymorphic.node.insert.after", function (event) {
+        updateCollectionButtons(event.collection());
+    });
+
+    /**
+     * @param {PolymorphicEvent} event
      */
     document.addEventListener("polymorphic.node.delete.after", function (event) {
         updateCollectionButtons(event.collection());
     });
 
     /**
-     * Default polymorphic.node.up event listener
-     */
-    document.addEventListener("polymorphic.node.up", function (event) {
-        event.preventDefault();
-
-        let beforeEvent = PolymorphicCollectionNodeUpBefore.createFromNodeUpEvent(event);
-        event.target.dispatchEvent(beforeEvent);
-        let afterEvent = PolymorphicCollectionNodeUpAfter.createFromNodeUpEvent(event);
-
-        // do up polymorphic node with beforeEvent returned data
-        moveUpPolymorphicNode(beforeEvent.collection(), beforeEvent.node());
-
-        beforeEvent.collection().dispatchEvent(afterEvent);
-    });
-
-    /**
-     * @param {PolymorphicCollectionNodeUpAfter} event
+     * @param {PolymorphicEvent} event
      */
     document.addEventListener("polymorphic.node.up.after", function (event) {
         updateCollectionButtons(event.collection());
     });
 
     /**
-     * Default polymorphic.node.down event listener
-     */
-    document.addEventListener("polymorphic.node.down", function (event) {
-        event.preventDefault();
-
-        let beforeEvent = PolymorphicCollectionNodeDownBefore.createFromNodeDownEvent(event);
-        event.target.dispatchEvent(beforeEvent);
-        let afterEvent = PolymorphicCollectionNodeDownAfter.createFromNodeDownEvent(event);
-
-        // do up polymorphic node with beforeEvent returned data
-        moveDownPolymorphicNode(beforeEvent.collection(), beforeEvent.node());
-
-        beforeEvent.collection().dispatchEvent(afterEvent);
-    });
-
-    /**
-     * @param {PolymorphicCollectionNodeDownAfter} event
+     * @param {PolymorphicEvent} event
      */
     document.addEventListener("polymorphic.node.down.after", function (event) {
         updateCollectionButtons(event.collection());
     });
 
-    function insertPolymorphicNode (collection, prototypeName, prototype, position)
-    {
+    /**
+     * @param {PolymorphicEvent} event
+     */
+    document.addEventListener("polymorphic.node.add.after", function (event) {
+        event.node().scrollIntoView();
+    });
 
-    }
+    /**
+     * @param {PolymorphicEvent} event
+     */
+    document.addEventListener("polymorphic.node.insert.after", function (event) {
+        event.node().scrollIntoView();
+    });
 
-    function addPolymorphicNode (collection, prototypeName, prototype)
-    {
-        const lastIndex = getPolymorphicCollectionLastIndex(collection);
-        const index = isNaN(lastIndex) ? 0 : lastIndex+1;
 
-        // create and process prototype
-        const newNode = document.createElement('div');
-        // append node to form
-        collection.appendChild(newNode);
-        newNode.outerHTML = prototype.replace(new RegExp(prototypeName, 'g'), index)
-
-        return newNode;
-    }
-
-    function deletePolymorphicNode (collection, nodeRow)
-    {
-        let nodeRowIterator = nodeRow;
-        while (nodeRowIterator = nodeRowIterator.nextElementSibling) {
-            if ( nodeRowIterator.matches('.polymorphic-node-row') ) {
-                modifyIndexes(nodeRowIterator, -1);
-            }
-        }
-
-        nodeRow.remove();
-    }
-
-    function moveUpPolymorphicNode(collection, node)
-    {
-        const prevNode = node.previousElementSibling;
-
-        if (prevNode) {
-            prevNode.parentNode.insertBefore(node, prevNode);
-            modifyIndexes(node, -1);
-            modifyIndexes(prevNode, +1);
-        }
-    }
-
-    function moveDownPolymorphicNode(collection, node)
-    {
-        const nextNode = node.nextElementSibling;
-
-        if (nextNode) {
-            node.parentNode.insertBefore(nextNode, node);
-            modifyIndexes(node, +1);
-            modifyIndexes(nextNode, -1);
-        }
-    }
-
-    function getPolymorphicCollectionLastIndex(collection)
-    {
-        const nodeRowList = collection.querySelectorAll('.polymorphic-node-row');
-
-        if (!nodeRowList.length) {
-            return -1;
-        }
-
-        return parseInt(nodeRowList.item(nodeRowList.length - 1).dataset.index);
-    }
-
-    // DUPLICATES softspring/cms-bundle assets form-collection.js
-    function modifyIndexes(rowElement, increment) {
-        let oldIndex = parseInt(rowElement.dataset.index);
-        let newIndex = oldIndex + increment;
-        rowElement.dataset.index = newIndex;
-        rowElement.setAttribute('data-index', newIndex);
-        rowElement.querySelectorAll('.polymorphic-node-index').forEach((nodeIndex) => nodeIndex.innerHTML = newIndex);
-
-        let oldRowId = rowElement.getAttribute('id');
-        rowElement.setAttribute('id', replaceLastOccurence(rowElement.getAttribute('id'), '_'+oldIndex, '_'+newIndex));
-        let newRowId = rowElement.getAttribute('id');
-
-        let oldRowFullName = rowElement.getAttribute('data-full-name');
-        rowElement.setAttribute('data-full-name', replaceLastOccurence(rowElement.getAttribute('data-full-name'), '['+oldIndex+']', '['+newIndex+']'));
-        let newRowFullName = rowElement.getAttribute('data-full-name');
-
-        rowElement.innerHTML = rowElement.innerHTML.replaceAll(oldRowId, newRowId).replaceAll(oldRowFullName, newRowFullName);
-    }
-
-    function replaceLastOccurence(text, search, replace) {
-        if (!text) {
-            return text;
-        }
-
-        let lastIndex = text.lastIndexOf(search);
-        return text.substr(0, lastIndex) + text.substr(lastIndex).replace(search, replace);
-    }
-
-    function updateCollectionButtons(collection)
-    {
-        [...collection.querySelectorAll('.polymorphic-node-row [data-polymorphic-action=up]')].forEach((element) => element.classList.remove('d-none'));
-        [...collection.querySelectorAll('.polymorphic-node-row [data-polymorphic-action=down]')].forEach((element) => element.classList.remove('d-none'));
-        [...collection.querySelectorAll('.polymorphic-node-row:first-child [data-polymorphic-action=up]')].forEach((element) => element.classList.add('d-none'));
-        [...collection.querySelectorAll('.polymorphic-node-row:last-child [data-polymorphic-action=down]')].forEach((element) => element.classList.add('d-none'));
-    }
-
-    document.querySelectorAll('.polymorphic-collection').forEach((collection) => updateCollectionButtons(collection));
+    // on load, prepare buttons
+    document.querySelectorAll('[data-polymorphic=collection]').forEach((collection) => updateCollectionButtons(collection));
 });
+
+function insertAfterPolymorphicNode (collection, prototypeName, prototype, position) {
+    // create and process prototype
+    let newNode = document.createElement('div');
+
+    // append node to form
+    const currentElementAtPosition = collection.querySelector('[data-polymorphic=node][data-index="'+position+'"]');
+    if (currentElementAtPosition) {
+        newNode = collection.insertBefore(newNode, currentElementAtPosition);
+    } else {
+        if (collection.children.length > 0) {
+            newNode = collection.insertBefore(newNode, collection.children[collection.children.length-1]);
+        } else {
+            newNode = collection.appendChild(newNode);
+        }
+    }
+
+    newNode.outerHTML = prototype.replace(new RegExp(prototypeName, 'g'), position);
+
+    // select the node again to update JS structure reference variables
+    return collection.querySelector([':scope > [data-index="'+position+'"]']);
+}
+
+function addPolymorphicNode (collection, prototypeName, prototype) {
+    const lastIndex = getPolymorphicCollectionLastIndex(collection);
+    const index = isNaN(lastIndex) ? 0 : lastIndex+1;
+
+    // create and process prototype
+    let newNode = document.createElement('div');
+
+    // append node to form
+    newNode = collection.appendChild(newNode);
+    newNode.outerHTML = prototype.replace(new RegExp(prototypeName, 'g'), index);
+
+    // select the node again to update JS structure reference variables
+    return collection.querySelector([':scope > [data-index="'+index+'"]']);
+}
+
+function deletePolymorphicNode (collection, node) {
+    let nodeIterator = node;
+    while (nodeIterator = nodeIterator.nextElementSibling) {
+        if ( nodeIterator.matches('[data-polymorphic=node]') ) {
+            modifyIndexes(nodeIterator, -1);
+        }
+    }
+
+    node.remove();
+}
+
+function moveUpPolymorphicNode(collection, node) {
+    const nodes = [...collection.querySelectorAll(':scope > [data-polymorphic=node]')];
+    const currentNodeIndex = nodes.indexOf(node);
+
+    if (nodes[currentNodeIndex-1] !== undefined) {
+        const prevNode = nodes[currentNodeIndex-1];
+        prevNode.parentNode.insertBefore(node, prevNode);
+        modifyIndexes(node, -1);
+        modifyIndexes(prevNode, +1);
+    }
+}
+
+function moveDownPolymorphicNode(collection, node) {
+    const nodes = [...collection.querySelectorAll(':scope > [data-polymorphic=node]')];
+    const currentNodeIndex = nodes.indexOf(node);
+
+    if (nodes[currentNodeIndex+1] !== undefined) {
+        const nextNode = nodes[currentNodeIndex+1];
+        node.parentNode.insertBefore(nextNode, node);
+        modifyIndexes(node, +1);
+        modifyIndexes(nextNode, -1);
+    }
+}
+
+function getPolymorphicCollectionLastIndex(collection) {
+    const nodeList = collection.querySelectorAll('[data-polymorphic=node]');
+
+    if (!nodeList.length) {
+        return -1;
+    }
+
+    return parseInt(nodeList.item(nodeList.length - 1).dataset.index);
+}
+
+// DUPLICATES softspring/cms-bundle assets form-collection.js
+function modifyIndexes(rowElement, increment) {
+    let oldIndex = parseInt(rowElement.dataset.index);
+    let newIndex = oldIndex + increment;
+    rowElement.dataset.index = newIndex;
+    rowElement.setAttribute('data-index', newIndex);
+    rowElement.querySelectorAll('[data-polymorphic=node-index]').forEach((nodeIndex) => nodeIndex.innerHTML = newIndex);
+
+    let oldRowId = rowElement.getAttribute('id');
+    rowElement.setAttribute('id', replaceLastOccurence(rowElement.getAttribute('id'), '_'+oldIndex, '_'+newIndex));
+    let newRowId = rowElement.getAttribute('id');
+
+    let oldRowFullName = rowElement.getAttribute('data-full-name');
+    rowElement.setAttribute('data-full-name', replaceLastOccurence(rowElement.getAttribute('data-full-name'), '['+oldIndex+']', '['+newIndex+']'));
+    let newRowFullName = rowElement.getAttribute('data-full-name');
+
+    rowElement.innerHTML = rowElement.innerHTML.replaceAll(oldRowId, newRowId).replaceAll(oldRowFullName, newRowFullName);
+}
+
+function replaceLastOccurence(text, search, replace) {
+    if (!text) {
+        return text;
+    }
+
+    let lastIndex = text.lastIndexOf(search);
+    return text.substr(0, lastIndex) + text.substr(lastIndex).replace(search, replace);
+}
+
+function updateCollectionButtons(collection) {
+    // TODO MOVE ONLY [data-polymorphic=node]
+    [...collection.querySelectorAll('[data-polymorphic=node] [data-polymorphic-action=up]')].forEach((element) => element.classList.remove('d-none'));
+    [...collection.querySelectorAll('[data-polymorphic=node] [data-polymorphic-action=down]')].forEach((element) => element.classList.remove('d-none'));
+    [...collection.querySelectorAll('[data-polymorphic=node]:first-child [data-polymorphic-action=up]')].forEach((element) => element.classList.add('d-none'));
+    [...collection.querySelectorAll('[data-polymorphic=node]:last-child [data-polymorphic-action=down]')].forEach((element) => element.classList.add('d-none'));
+}
+
+export {
+    insertAfterPolymorphicNode,
+    addPolymorphicNode,
+    deletePolymorphicNode,
+    moveUpPolymorphicNode,
+    moveDownPolymorphicNode,
+    getPolymorphicCollectionLastIndex,
+    modifyIndexes,
+    replaceLastOccurence,
+    updateCollectionButtons
+};
