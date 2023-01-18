@@ -446,11 +446,11 @@ function replaceLastOccurence(text, search, replace) {
 }
 
 function updateCollectionButtons(collection) {
-    // TODO MOVE ONLY [data-polymorphic=node]
-    [...collection.querySelectorAll('[data-polymorphic=node] [data-polymorphic-action=up]')].forEach((element) => element.classList.remove('d-none'));
-    [...collection.querySelectorAll('[data-polymorphic=node] [data-polymorphic-action=down]')].forEach((element) => element.classList.remove('d-none'));
-    [...collection.querySelectorAll('[data-polymorphic=node]:first-child [data-polymorphic-action=up]')].forEach((element) => element.classList.add('d-none'));
-    [...collection.querySelectorAll('[data-polymorphic=node]:last-child [data-polymorphic-action=down]')].forEach((element) => element.classList.add('d-none'));
+    [...collection.querySelectorAll(':scope > [data-polymorphic=node] > .cms-module > .cms-module-header > .cms-module-buttons > [data-polymorphic-action=up]')].forEach((element) => element.classList.remove('d-none'));
+    [...collection.querySelectorAll(':scope > [data-polymorphic=node] > .cms-module > .cms-module-header > .cms-module-buttons > [data-polymorphic-action=down]')].forEach((element) => element.classList.remove('d-none'));
+    const collectionNodes = collection.querySelectorAll(':scope > [data-polymorphic=node]');
+    collectionNodes.length>0 && [...collectionNodes[0].querySelectorAll(':scope > .cms-module > .cms-module-header > .cms-module-buttons > [data-polymorphic-action=up]')].forEach((element) => element.classList.add('d-none'));
+    collectionNodes.length>0 && [...collectionNodes[collectionNodes.length-1].querySelectorAll(':scope > .cms-module > .cms-module-header > .cms-module-buttons > [data-polymorphic-action=down]')].forEach((element) => element.classList.add('d-none'));
 }
 
 export {
