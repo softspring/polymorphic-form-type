@@ -446,11 +446,15 @@ function replaceLastOccurence(text, search, replace) {
 }
 
 function updateCollectionButtons(collection) {
-    [...collection.querySelectorAll(':scope > [data-polymorphic=node] > .cms-module > .cms-module-header > .cms-module-buttons > [data-polymorphic-action=up]')].forEach((element) => element.classList.remove('d-none'));
-    [...collection.querySelectorAll(':scope > [data-polymorphic=node] > .cms-module > .cms-module-header > .cms-module-buttons > [data-polymorphic-action=down]')].forEach((element) => element.classList.remove('d-none'));
-    const collectionNodes = collection.querySelectorAll(':scope > [data-polymorphic=node]');
-    collectionNodes.length>0 && [...collectionNodes[0].querySelectorAll(':scope > .cms-module > .cms-module-header > .cms-module-buttons > [data-polymorphic-action=up]')].forEach((element) => element.classList.add('d-none'));
-    collectionNodes.length>0 && [...collectionNodes[collectionNodes.length-1].querySelectorAll(':scope > .cms-module > .cms-module-header > .cms-module-buttons > [data-polymorphic-action=down]')].forEach((element) => element.classList.add('d-none'));
+    const innerCollectionUpButtons = [...collection.querySelectorAll(':scope > [data-polymorphic=node] [data-polymorphic=node] [data-polymorphic-action=up]')];
+    const collectionUpButtons = [...collection.querySelectorAll(':scope > [data-polymorphic=node] [data-polymorphic-action=up]')].filter((button) => !innerCollectionUpButtons.includes(button));
+    collectionUpButtons.forEach((button) => button.classList.remove('d-none'));
+    collectionUpButtons.length>0 && collectionUpButtons[0].classList.add('d-none');
+
+    const innerCollectionDownButtons = [...collection.querySelectorAll(':scope > [data-polymorphic=node] [data-polymorphic=node] [data-polymorphic-action=down]')];
+    const collectionDownButtons = [...collection.querySelectorAll(':scope > [data-polymorphic=node] [data-polymorphic-action=down]')].filter((button) => !innerCollectionDownButtons.includes(button));
+    collectionDownButtons.forEach((button) => button.classList.remove('d-none'));
+    collectionDownButtons.length>0 && collectionDownButtons[collectionDownButtons.length-1].classList.add('d-none');
 }
 
 export {
