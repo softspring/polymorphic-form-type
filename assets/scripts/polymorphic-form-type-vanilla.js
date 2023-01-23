@@ -340,7 +340,7 @@ function insertAfterPolymorphicNode (collection, prototypeName, prototype, posit
     let newNode = document.createElement('div');
 
     // append node to form
-    const currentElementAtPosition = collection.querySelector('[data-polymorphic=node][data-index="'+position+'"]');
+    const currentElementAtPosition = collection.querySelector(':scope > [data-polymorphic=node][data-index="'+position+'"]');
     if (currentElementAtPosition) {
         newNode = collection.insertBefore(newNode, currentElementAtPosition);
     } else {
