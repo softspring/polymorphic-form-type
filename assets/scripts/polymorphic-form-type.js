@@ -48,6 +48,8 @@ class PolymorphicEvent extends Event {
 
         if (this._collection) {
             return this._collection;
+        } else if (!this.target) {
+            return null;
         } else if (this.target.dataset.polymorphicCollection !== undefined) {
             return document.getElementById(this.target.dataset.polymorphicCollection);
         } else {
@@ -69,7 +71,13 @@ class PolymorphicEvent extends Event {
         if (this._position !== undefined) {
             return this._position;
         } else {
-            throw 'Position was not found';
+            let node = this.node();
+
+            if (node && node.dataset.index !== undefined) {
+                return node.dataset.index;
+            }
+
+            return null;
         }
     }
 
@@ -78,7 +86,7 @@ class PolymorphicEvent extends Event {
             this._node = node;
         }
 
-        if (this._node) {
+        if (this._node !== undefined) {
             return this._node;
         } else if (event.target.dataset.polymorphicNode !== undefined) {
             return document.getElementById(event.target.dataset.polymorphicNode);
@@ -97,7 +105,8 @@ class PolymorphicEvent extends Event {
         } else if (this.target.dataset.polymorphicPrototypeName !== undefined) {
             return this.target.dataset.polymorphicPrototypeName;
         } else {
-            return '__name__';
+            console.log('This target does not contains data-polymorphic-prototype-name attribute, neither was set');
+            return null;
         }
     }
 
@@ -111,7 +120,8 @@ class PolymorphicEvent extends Event {
         } else if (this.target.dataset.polymorphicPrototype !== undefined) {
             return this.target.dataset.polymorphicPrototype;
         } else {
-            throw 'This target does not contains data-polymorphic-prototype attribute, neither was set';
+            console.log('This target does not contains data-polymorphic-prototype attribute, neither was set');
+            return null;
         }
     }
 }
@@ -192,6 +202,7 @@ window.addEventListener('load', (event) => {
         event.preventDefault();
 
         let beforeEvent = PolymorphicEvent.create('polymorphic.node.add.before', event);
+        beforeEvent.node(null); // init node, do not search in dom because it's not yet created
         event.target.dispatchEvent(beforeEvent);
 
         // do add polymorphic node with beforeEvent returned data
@@ -236,11 +247,12 @@ window.addEventListener('load', (event) => {
 
         let beforeEvent = PolymorphicEvent.create('polymorphic.node.delete.before', event);
         event.target.dispatchEvent(beforeEvent);
-        const afterEvent = PolymorphicEvent.create('polymorphic.node.delete.after', beforeEvent);
+        beforeEvent.collection(beforeEvent.collection()); // store reference before deleting
 
         // do delete polymorphic node with beforeEvent returned data
         deletePolymorphicNode(beforeEvent.collection(), beforeEvent.node());
 
+        const afterEvent = PolymorphicEvent.create('polymorphic.node.delete.after', beforeEvent);
         afterEvent.collection().dispatchEvent(afterEvent);
     });
 
@@ -254,6 +266,7 @@ window.addEventListener('load', (event) => {
         let beforeEvent = PolymorphicEvent.create('polymorphic.node.up.before', event);
         event.target.dispatchEvent(beforeEvent);
         beforeEvent.collection(beforeEvent.collection()); // store reference before moving
+        beforeEvent.node(beforeEvent.node()); // store reference before moving
 
         // do up polymorphic node with beforeEvent returned data
         moveUpPolymorphicNode(beforeEvent.collection(), beforeEvent.node());
@@ -272,6 +285,7 @@ window.addEventListener('load', (event) => {
         let beforeEvent = PolymorphicEvent.create('polymorphic.node.down.before', event);
         event.target.dispatchEvent(beforeEvent);
         beforeEvent.collection(beforeEvent.collection()); // store reference before moving
+        beforeEvent.node(beforeEvent.node()); // store reference before moving
 
         // do up polymorphic node with beforeEvent returned data
         moveDownPolymorphicNode(beforeEvent.collection(), beforeEvent.node());
@@ -468,3 +482,37 @@ export {
     replaceLastOccurence,
     updateCollectionButtons
 };
+
+// DEBUG EVENTS
+// window.addEventListener('load', (event) => {
+//     function dumpEvent(event) {
+//         console.log('*************************************** '+event.type+' ***************************************');
+//         console.log(event);
+//         // try { console.log('originEvent: '+ event.originEvent()); } catch {}
+//         try { console.log(event.collection()); } catch {}
+//         try { console.log('position: '+ event.position()); } catch {}
+//         try { console.log(event.node()); } catch {}
+//         // try { console.log('prototypeName: '+ event.prototypeName()); } catch {}
+//         // try { console.log('prototype: '+ event.prototype()); } catch {}
+//     }
+//
+//     // document.addEventListener('polymorphic.node.add', dumpEvent);
+//     document.addEventListener('polymorphic.node.add.before', dumpEvent);
+//     document.addEventListener('polymorphic.node.add.after', dumpEvent);
+//
+//     // document.addEventListener('polymorphic.node.insert', dumpEvent);
+//     document.addEventListener('polymorphic.node.insert.before', dumpEvent);
+//     document.addEventListener('polymorphic.node.insert.after', dumpEvent);
+//
+//     // document.addEventListener('polymorphic.node.delete', dumpEvent);
+//     document.addEventListener('polymorphic.node.delete.before', dumpEvent);
+//     document.addEventListener('polymorphic.node.delete.after', dumpEvent);
+//
+//     // document.addEventListener('polymorphic.node.up', dumpEvent);
+//     document.addEventListener('polymorphic.node.up.before', dumpEvent);
+//     document.addEventListener('polymorphic.node.up.after', dumpEvent);
+//
+//     // document.addEventListener('polymorphic.node.down', dumpEvent);
+//     document.addEventListener('polymorphic.node.down.before', dumpEvent);
+//     document.addEventListener('polymorphic.node.down.after', dumpEvent);
+// });
