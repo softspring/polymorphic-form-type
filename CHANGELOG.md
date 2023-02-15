@@ -1,23 +1,21 @@
 # CHANGELOG
 
-## [4.1.0](https://github.com/softspring/polymorphic-form-type/releases/tag/4.1.0) (07 mar 2022)
+## [v5.0.4](https://github.com/softspring/polymorphic-form-type/releases/tag/v5.0.4)
 
-### Upgrading
+*Nothing has changed since last v5.0.3 version*
 
-*Nothing to do on upgrading*
+## [v5.0.3](https://github.com/softspring/polymorphic-form-type/releases/tag/v5.0.3)
 
-### Commits
+*Nothing has changed since last v5.0.2 version*
 
-- 5f82d24 Remove dev version in composer.json file
-- 1e70129 Allow form array values, not only objects/entities
-- 65957cc Configure new 4.1-dev version to main branch in composer.json file
-- 3bc23c2 Remove dev version in composer.json file
+## [v5.0.2](https://github.com/softspring/polymorphic-form-type/releases/tag/v5.0.2)
 
-### Changes
+*Nothing has changed since last v5.0.1 version*
 
- src/Form/DataTransformer/NodeDataTransformer.php     |  4 ++++
- src/Form/Discriminator/DoctrineNodeDiscriminator.php |  4 ++--
- src/Form/Discriminator/NodeDiscriminator.php         | 11 +++++++++--
- src/Form/Type/DoctrinePolymorphicCollectionType.php  |  2 +-
- src/Form/Type/PolymorphicCollectionType.php          |  2 +-
- 5 files changed, 17 insertions(+), 6 deletions(-)
+## [v5.0.1](https://github.com/softspring/polymorphic-form-type/releases/tag/v5.0.1)
+
+*Nothing has changed since last v5.0.0 version*
+
+## [v5.0.0](https://github.com/softspring/polymorphic-form-type/releases/tag/v5.0.0)
+
+*Previous versions are not in changelog*
