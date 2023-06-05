@@ -73,9 +73,6 @@ class NodesResizeFormListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param mixed $name
-     */
     protected function addSubform($name, string $discr, FormInterface $form)
     {
         $formClass = $this->nodeDiscriminator->getFormTypeFromDiscriminator($discr);
