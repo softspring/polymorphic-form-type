@@ -1,14 +1,12 @@
 class PolymorphicEvent extends Event {
-    _originEvent = undefined;
-    _collection = undefined;
-    _position = undefined;
-    _node = undefined;
-    _prototypeName = undefined;
-    _prototype = undefined;
-
     constructor(type, originEvent) {
         super(type, { bubbles: true, cancelable: true });
         this._originEvent = originEvent;
+        this._collection = undefined;
+        this._position = undefined;
+        this._node = undefined;
+        this._prototypeName = undefined;
+        this._prototype = undefined;
     }
 
     static create(type, originEvent) {
