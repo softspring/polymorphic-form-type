@@ -21,7 +21,7 @@ class DoctrinePolymorphicCollectionType extends PolymorphicCollectionType
         $this->em = $em;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -34,7 +34,7 @@ class DoctrinePolymorphicCollectionType extends PolymorphicCollectionType
         $resolver->setRequired('abstract_class');
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (empty($options['abstract_class'])) {
             throw new RuntimeException('abstract_class must be set');

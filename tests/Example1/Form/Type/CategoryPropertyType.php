@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class CategoryPropertyType extends AbstractNodeType
 {
-    public function buildChildForm(FormBuilderInterface $builder, array $options)
+    public function buildChildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('categoryName');
     }

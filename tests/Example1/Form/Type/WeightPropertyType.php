@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class WeightPropertyType extends AbstractNodeType
 {
-    public function buildChildForm(FormBuilderInterface $builder, array $options)
+    public function buildChildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('weight');
     }

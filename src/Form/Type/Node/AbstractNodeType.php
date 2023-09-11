@@ -23,7 +23,7 @@ abstract class AbstractNodeType extends AbstractType
      *
      * {@inheritdoc}
      */
-    final public function configureOptions(OptionsResolver $resolver)
+    final public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'prototype_button_label' => null,
@@ -37,7 +37,7 @@ abstract class AbstractNodeType extends AbstractType
         $this->configureChildOptions($resolver);
     }
 
-    protected function configureChildOptions(OptionsResolver $resolver)
+    protected function configureChildOptions(OptionsResolver $resolver): void
     {
         // nothing to do on default, override method if needed
     }
@@ -49,7 +49,7 @@ abstract class AbstractNodeType extends AbstractType
      *
      * {@inheritdoc}
      */
-    final public function buildForm(FormBuilderInterface $builder, array $options)
+    final public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (!empty($options['data_class'])) {
             throw new InvalidConfigurationException('AbstractNodeType requires no data_class to be defined in child types');
@@ -68,7 +68,7 @@ abstract class AbstractNodeType extends AbstractType
         }
     }
 
-    abstract protected function buildChildForm(FormBuilderInterface $builder, array $options);
+    abstract protected function buildChildForm(FormBuilderInterface $builder, array $options): void;
 
     /**
      * Declare as final to force to define some defaults.
@@ -77,12 +77,12 @@ abstract class AbstractNodeType extends AbstractType
      *
      * {@inheritdoc}
      */
-    final public function buildView(FormView $view, FormInterface $form, array $options)
+    final public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $this->buildChildView($view, $form, $options);
     }
 
-    protected function buildChildView(FormView $view, FormInterface $form, array $options)
+    protected function buildChildView(FormView $view, FormInterface $form, array $options): void
     {
         // nothing to do on default, override method if needed
     }
@@ -94,7 +94,7 @@ abstract class AbstractNodeType extends AbstractType
      *
      * {@inheritdoc}
      */
-    final public function finishView(FormView $view, FormInterface $form, array $options)
+    final public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         $this->finishChildView($view, $form, $options);
         $view->vars['attr']['data-index'] = $view->vars['name'];
@@ -103,7 +103,7 @@ abstract class AbstractNodeType extends AbstractType
         $view->vars['prototype_button_attr'] = $options['prototype_button_attr'];
     }
 
-    protected function finishChildView(FormView $view, FormInterface $form, array $options)
+    protected function finishChildView(FormView $view, FormInterface $form, array $options): void
     {
         // nothing to do on default, override method if needed
     }
