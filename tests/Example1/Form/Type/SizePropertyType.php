@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class SizePropertyType extends AbstractNodeType
 {
-    public function buildChildForm(FormBuilderInterface $builder, array $options)
+    public function buildChildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('length');
         $builder->add('width');

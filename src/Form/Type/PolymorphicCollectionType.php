@@ -29,7 +29,7 @@ class PolymorphicCollectionType extends AbstractType
         return CollectionType::class;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'types_map' => [],
@@ -51,7 +51,7 @@ class PolymorphicCollectionType extends AbstractType
         return 'polymorphic_collection';
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (empty($options['types_map'])) {
             throw new RuntimeException('types_map must be set');
@@ -60,7 +60,7 @@ class PolymorphicCollectionType extends AbstractType
         $this->configureResizeEventSubscriber($builder, $options);
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['prototypes'] = [];
 
