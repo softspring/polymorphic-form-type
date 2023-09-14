@@ -68,6 +68,8 @@ class PolymorphicEvent extends Event {
 
         if (this._position !== undefined) {
             return this._position;
+        } else if (this.target.dataset.polymorphicCollectionInsertPosition !== undefined) {
+            return this.target.dataset.polymorphicCollectionInsertPosition;
         } else {
             let node = this.node();
 
@@ -332,14 +334,14 @@ window.addEventListener('load', (event) => {
      * @param {PolymorphicEvent} event
      */
     document.addEventListener("polymorphic.node.add.after", function (event) {
-        event.node().scrollIntoView();
+        event.node().scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
     });
 
     /**
      * @param {PolymorphicEvent} event
      */
     document.addEventListener("polymorphic.node.insert.after", function (event) {
-        event.node().scrollIntoView();
+        event.node().scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
     });
 
 
