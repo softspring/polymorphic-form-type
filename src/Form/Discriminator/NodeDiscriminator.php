@@ -2,7 +2,8 @@
 
 namespace Softspring\Component\PolymorphicFormType\Form\Discriminator;
 
-use Symfony\Component\Form\Exception\RuntimeException;
+use Softspring\Component\PolymorphicFormType\Form\Exception\MissingClassDiscriminatorException;
+use Softspring\Component\PolymorphicFormType\Form\Exception\MissingFormTypeException;
 
 class NodeDiscriminator implements NodeDiscriminatorInterface
 {
@@ -27,6 +28,10 @@ class NodeDiscriminator implements NodeDiscriminatorInterface
         return $this->formTypeDiscriminatorMap;
     }
 
+    /**
+     * @throws MissingClassDiscriminatorException
+     * @throws MissingFormTypeException
+     */
     public function getDiscriminatorForObject($object): string
     {
         // search for discriminator key in discriminators map
@@ -37,14 +42,14 @@ class NodeDiscriminator implements NodeDiscriminatorInterface
         }
 
         if (empty($discr)) {
-            throw new RuntimeException(sprintf('The class "%s" is not present in discriminator map', get_class($object)));
+            throw new MissingClassDiscriminatorException(get_class($object));
         }
 
         // get plain discriminator
         $discr = is_array($discr) ? $discr[0] : $discr;
 
         if (!isset($this->formTypeDiscriminatorMap[$discr])) {
-            throw new RuntimeException(sprintf('There is not form type for "%s" discriminator', $discr));
+            throw new MissingFormTypeException($discr);
         }
 
         return $discr;
