@@ -4,10 +4,10 @@
     "type": "library",
     "license": "MIT",
     "minimum-stability": "dev",
-    "prefer-stable": true,
+    "prefer-stable": false,
     "require": {
         "php": ">=8.0",
-        "symfony/form": "^5.4|^6.0"
+        "symfony/form": "^5.4|^6.0|^7.0@dev"
     },
     "require-dev": {
         "doctrine/orm": "^2.11",
