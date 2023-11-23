@@ -191,7 +191,12 @@ window.addEventListener('load', (event) => {
             return;
         }
 
-        console.error('Invalid polymorphic action: '+polymorphicActionTarget.dataset.polymorphicAction+'. Valid options are: add, insert, delete, up, down');
+        if (polymorphicActionTarget.dataset.polymorphicAction === 'duplicate') {
+            polymorphicActionTarget.dispatchEvent(new PolymorphicEvent('polymorphic.node.duplicate', event));
+            return;
+        }
+
+        console.error('Invalid polymorphic action: '+polymorphicActionTarget.dataset.polymorphicAction+'. Valid options are: add, insert, delete, up, down, duplicate');
     });
 
     /**
@@ -294,6 +299,33 @@ window.addEventListener('load', (event) => {
         beforeEvent.collection().dispatchEvent(afterEvent);
     });
 
+    /**
+     * Default polymorphic.node.duplicate event listener
+     * @param {PolymorphicEvent} event
+     */
+    document.addEventListener("polymorphic.node.duplicate", function (event) {
+        event.preventDefault();
+
+        let beforeEvent = PolymorphicEvent.create('polymorphic.node.duplicate.before', event);
+        event.target.dispatchEvent(beforeEvent);
+        beforeEvent.collection(beforeEvent.collection()); // store reference before moving
+        beforeEvent.node(beforeEvent.node()); // store reference before moving
+
+        // do up polymorphic node with beforeEvent returned data
+        let newNode = duplicatePolymorphicNode(beforeEvent.collection(), beforeEvent.node());
+
+        if (newNode.nextElementSibling) {
+            const nodes = [...beforeEvent.collection().querySelectorAll(':scope > [data-polymorphic=node]')];
+            for (let n = nodes.indexOf(newNode)+1 ; n < nodes.length ; n++) {
+                modifyIndexes(nodes[n], +1);
+            }
+        }
+
+        const afterEvent = PolymorphicEvent.create('polymorphic.node.duplicate.after', beforeEvent);
+        afterEvent.node(newNode);
+        beforeEvent.collection().dispatchEvent(afterEvent);
+    });
+
 
     /**
      * @param {PolymorphicEvent} event
@@ -333,6 +365,13 @@ window.addEventListener('load', (event) => {
     /**
      * @param {PolymorphicEvent} event
      */
+    document.addEventListener("polymorphic.node.duplicate.after", function (event) {
+        updateCollectionButtons(event.collection());
+    });
+
+    /**
+     * @param {PolymorphicEvent} event
+     */
     document.addEventListener("polymorphic.node.add.after", function (event) {
         event.node().scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
     });
@@ -341,6 +380,13 @@ window.addEventListener('load', (event) => {
      * @param {PolymorphicEvent} event
      */
     document.addEventListener("polymorphic.node.insert.after", function (event) {
+        event.node().scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+    });
+
+    /**
+     * @param {PolymorphicEvent} event
+     */
+    document.addEventListener("polymorphic.node.duplicate.after", function (event) {
         event.node().scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
     });
 
@@ -419,6 +465,23 @@ function moveDownPolymorphicNode(collection, node) {
         modifyIndexes(node, +1);
         modifyIndexes(nextNode, -1);
     }
+}
+
+function duplicatePolymorphicNode(collection, node) {
+    const nodes = [...collection.querySelectorAll(':scope > [data-polymorphic=node]')];
+    const currentNodeIndex = nodes.indexOf(node);
+
+    let newNode = node.cloneNode(true);
+
+    collection.appendChild(newNode);
+
+    if (nodes[currentNodeIndex+1] !== undefined) {
+        const nextNode = nodes[currentNodeIndex+1];
+        nextNode.parentNode.insertBefore(newNode, nextNode);
+        modifyIndexes(newNode, +1);
+    }
+
+    return newNode;
 }
 
 function getPolymorphicCollectionLastIndex(collection) {
