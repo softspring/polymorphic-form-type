@@ -468,18 +468,11 @@ function moveDownPolymorphicNode(collection, node) {
 }
 
 function duplicatePolymorphicNode(collection, node) {
-    const nodes = [...collection.querySelectorAll(':scope > [data-polymorphic=node]')];
-    const currentNodeIndex = nodes.indexOf(node);
-
     let newNode = node.cloneNode(true);
+    const nextNode = node.nextElementSibling;
 
-    collection.appendChild(newNode);
-
-    if (nodes[currentNodeIndex+1] !== undefined) {
-        const nextNode = nodes[currentNodeIndex+1];
-        nextNode.parentNode.insertBefore(newNode, nextNode);
-        modifyIndexes(newNode, +1);
-    }
+    nextNode.parentNode.insertBefore(newNode, nextNode);
+    modifyIndexes(newNode, +1);
 
     return newNode;
 }
