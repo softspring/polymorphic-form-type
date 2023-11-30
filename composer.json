@@ -6,8 +6,8 @@
     "minimum-stability": "dev",
     "prefer-stable": false,
     "require": {
-        "php": ">=8.0",
-        "symfony/form": "^5.4|^6.0|^7.0@dev"
+        "php": ">=8.1",
+        "symfony/form": "^5.4|^6.0|^7.0"
     },
     "require-dev": {
         "doctrine/orm": "^2.11",
@@ -26,12 +26,5 @@
     },
     "config": {
         "sort-packages": true
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-5.0": "5.0.x-dev",
-            "dev-5.1": "5.1.x-dev",
-            "dev-5.2": "5.2.x-dev"
-        }
     }
 }
