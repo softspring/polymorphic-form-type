@@ -11,8 +11,8 @@
     },
     "require-dev": {
         "doctrine/orm": "^2.11",
-        "friendsofphp/php-cs-fixer": "^3.14",
-        "phpstan/phpstan": "^1.9"
+        "friendsofphp/php-cs-fixer": "^3.40",
+        "phpstan/phpstan": "^1.10"
     },
     "autoload": {
         "psr-4": {
