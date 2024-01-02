@@ -19,12 +19,7 @@ class NodeDataTransformer implements DataTransformerInterface
         $this->idField = $idField;
     }
 
-    /**
-     * @param ?mixed $value
-     *
-     * @return ?array
-     */
-    public function transform(mixed $value)
+    public function transform(mixed $value): mixed
     {
         if (null === $value) {
             return null;
@@ -63,10 +58,8 @@ class NodeDataTransformer implements DataTransformerInterface
 
     /**
      * @param array|object $value
-     *
-     * @return object|array
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         $className = $this->nodeDiscriminator->getClassNameForDiscriminator($value[$this->discriminatorField]);
 
