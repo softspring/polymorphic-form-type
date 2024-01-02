@@ -61,19 +61,7 @@ class NodeDataTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value): mixed
     {
-        $className = $this->nodeDiscriminator->getClassNameForDiscriminator($value[$this->discriminatorField]);
-
-        if (!empty($value[$this->idField])) {
-            $element = $this->nodeDiscriminator->findObjectById($className, $value[$this->idField]);
-
-            if (!$element) {
-                throw new TransformationFailedException(sprintf('Failed transformation for class "%s" for element with id %u', $className, $value[$this->idField]));
-            }
-        } elseif ('array' == $className) {
-            $element = [];
-        } else {
-            $element = new $className();
-        }
+        $element = $this->reverseTransformInitialValue($value);
 
         $data = $value;
         unset($data[$this->idField]);
@@ -107,5 +95,24 @@ class NodeDataTransformer implements DataTransformerInterface
         } catch (\ReflectionException $e) {
             throw new TransformationFailedException(sprintf('The "%s" class not exists', is_object($value) ? get_class($value) : $value));
         }
+    }
+
+    protected function reverseTransformInitialValue($value): mixed
+    {
+        $className = $this->nodeDiscriminator->getClassNameForDiscriminator($value[$this->discriminatorField]);
+
+        if (!empty($value[$this->idField])) {
+            $element = $this->nodeDiscriminator->findObjectById($className, $value[$this->idField]);
+
+            if (!$element) {
+                throw new TransformationFailedException(sprintf('Failed transformation for class "%s" for element with id %u', $className, $value[$this->idField]));
+            }
+
+            return $element;
+        } elseif ('array' == $className) {
+            return [];
+        }
+
+        return new $className();
     }
 }
