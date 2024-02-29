@@ -10,7 +10,7 @@
         "symfony/form": "^5.4|^6.0|^7.0"
     },
     "require-dev": {
-        "doctrine/orm": "^2.11",
+        "doctrine/orm": "^2.11 || ^3.0",
         "friendsofphp/php-cs-fixer": "3.48.*",
         "phpstan/phpstan": "^1.10"
     },
