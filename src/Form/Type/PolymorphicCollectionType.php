@@ -19,7 +19,7 @@ class PolymorphicCollectionType extends AbstractType
 {
     protected ?FormFactory $formFactory;
 
-    public function __construct(FormFactory $formFactory = null)
+    public function __construct(?FormFactory $formFactory = null)
     {
         $this->formFactory = $formFactory;
     }

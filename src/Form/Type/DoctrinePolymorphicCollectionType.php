@@ -15,7 +15,7 @@ class DoctrinePolymorphicCollectionType extends PolymorphicCollectionType
 {
     protected ?EntityManagerInterface $em;
 
-    public function __construct(FormFactory $formFactory = null, EntityManagerInterface $em = null)
+    public function __construct(?FormFactory $formFactory = null, ?EntityManagerInterface $em = null)
     {
         parent::__construct($formFactory);
         $this->em = $em;
