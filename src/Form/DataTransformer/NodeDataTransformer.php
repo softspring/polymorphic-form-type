@@ -2,6 +2,8 @@
 
 namespace Softspring\Component\PolymorphicFormType\Form\DataTransformer;
 
+use ReflectionClass;
+use ReflectionException;
 use Softspring\Component\PolymorphicFormType\Form\Discriminator\NodeDiscriminator;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -32,7 +34,7 @@ class NodeDataTransformer implements DataTransformerInterface
         $data = [];
 
         try {
-            $reflection = new \ReflectionClass($value);
+            $reflection = new ReflectionClass($value);
             foreach ($reflection->getProperties() as $property) {
                 $getterName = 'get'.ucfirst($property->getName());
                 if ($reflection->hasMethod($getterName)) {
@@ -51,7 +53,7 @@ class NodeDataTransformer implements DataTransformerInterface
             $data[$this->discriminatorField] = $this->nodeDiscriminator->getDiscriminatorForObject($value);
 
             return $data;
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             throw new TransformationFailedException(sprintf('The "%s" class not exists', is_object($value) ? get_class($value) : $value));
         }
     }
@@ -77,7 +79,7 @@ class NodeDataTransformer implements DataTransformerInterface
         unset($data[$this->discriminatorField]);
 
         try {
-            $reflection = new \ReflectionClass($element);
+            $reflection = new ReflectionClass($element);
 
             foreach ($data as $field => $fieldValue) {
                 $setterName = 'set'.ucfirst($field);
@@ -92,7 +94,7 @@ class NodeDataTransformer implements DataTransformerInterface
             }
 
             return $element;
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             throw new TransformationFailedException(sprintf('The "%s" class not exists', is_object($value) ? get_class($value) : $value));
         }
     }

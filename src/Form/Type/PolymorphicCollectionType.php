@@ -5,7 +5,6 @@ namespace Softspring\Component\PolymorphicFormType\Form\Type;
 use Softspring\Component\PolymorphicFormType\Form\DataTransformer\NodeDataTransformer;
 use Softspring\Component\PolymorphicFormType\Form\Discriminator\NodeDiscriminator;
 use Softspring\Component\PolymorphicFormType\Form\EventListener\NodesResizeFormListener;
-use Softspring\Component\PolymorphicFormType\Form\Type\Node\AbstractNodeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
