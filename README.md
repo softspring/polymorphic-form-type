@@ -5,7 +5,7 @@
 ![License](https://img.shields.io/packagist/l/softspring/polymorphic-form-type?style=flat-square)
 ![PHP Version](https://img.shields.io/packagist/dependency-v/softspring/polymorphic-form-type/php?style=flat-square)
 ![Downloads](https://img.shields.io/packagist/dt/softspring/polymorphic-form-type?style=flat-square)
-[![CI](https://img.shields.io/github/actions/workflow/status/softspring/polymorphic-form-type/php.yml?branch=5.3&style=flat-square&label=CI)](https://github.com/softspring/polymorphic-form-type/actions/workflows/php.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/softspring/polymorphic-form-type/ci.yml?branch=5.3&style=flat-square&label=CI)](https://github.com/softspring/polymorphic-form-type/actions/workflows/ci.yml)
 
 This package provides a Symfony form type to manage with polymorphic collections.
 
