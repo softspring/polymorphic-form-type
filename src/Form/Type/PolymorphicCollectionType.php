@@ -5,6 +5,7 @@ namespace Softspring\Component\PolymorphicFormType\Form\Type;
 use Softspring\Component\PolymorphicFormType\Form\DataTransformer\NodeDataTransformer;
 use Softspring\Component\PolymorphicFormType\Form\Discriminator\NodeDiscriminator;
 use Softspring\Component\PolymorphicFormType\Form\EventListener\NodesResizeFormListener;
+use Softspring\Component\PolymorphicFormType\Form\Type\Node\AbstractNodeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -96,7 +97,7 @@ class PolymorphicCollectionType extends AbstractType
      */
     protected function getFormFactory(array $options): FormFactory
     {
-        if ($options['form_factory']) {
+        if ($options['form_factory'] ?? false) {
             if (!$options['form_factory'] instanceof FormFactory) {
                 throw new RuntimeException('form_factory option must contain an instance of FormFactory');
             }
@@ -112,7 +113,7 @@ class PolymorphicCollectionType extends AbstractType
     /**
      * Configure event subscriber for resizing with data transformer.
      */
-    protected function configureResizeEventSubscriber(FormBuilderInterface $builder, array $options)
+    protected function configureResizeEventSubscriber(FormBuilderInterface $builder, array $options): void
     {
         if (empty($options['discriminator_map'])) {
             throw new RuntimeException('discriminator_map must be set');
