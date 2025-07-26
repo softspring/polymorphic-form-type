@@ -66,7 +66,7 @@ class DoctrinePolymorphicCollectionType extends PolymorphicCollectionType
         throw new RuntimeException('Entity manager is required for DoctrinePolymorphicCollectionType, check documentation.');
     }
 
-    protected function configureResizeEventSubscriber(FormBuilderInterface $builder, array $options)
+    protected function configureResizeEventSubscriber(FormBuilderInterface $builder, array $options): void
     {
         $em = $this->getEntityManager($options);
         $discriminator = new DoctrineNodeDiscriminator($em, $options['types_map'], $options['abstract_class'], $options['types_options'], $options['discriminator_field']);
