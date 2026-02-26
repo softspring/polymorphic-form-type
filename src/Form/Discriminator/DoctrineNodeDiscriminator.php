@@ -28,7 +28,7 @@ class DoctrineNodeDiscriminator extends NodeDiscriminator
         return $this->em->getClassMetadata($this->abstractClass)->discriminatorMap[$discriminator];
     }
 
-    public function getIdFieldForObject($object): null
+    public function getIdFieldForObject($object): mixed
     {
         $classMetadata = $this->em->getClassMetadata(get_class($object));
 
@@ -36,7 +36,7 @@ class DoctrineNodeDiscriminator extends NodeDiscriminator
             throw new RuntimeException('DoctrinePolymorphicCollection only supports entities with one identity field');
         }
 
-        return $classMetadata->identifier[0];
+        return $classMetadata->identifier[0] ?? null;
     }
 
     public function findObjectById($className, $id): ?object
