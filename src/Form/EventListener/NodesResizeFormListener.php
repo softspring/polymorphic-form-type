@@ -39,7 +39,7 @@ class NodesResizeFormListener implements EventSubscriberInterface
     /**
      * Before data is set, add the existing collection subforms.
      */
-    public function preSetData(FormEvent $event)
+    public function preSetData(FormEvent $event): void
     {
         $nodes = $event->getData() ?? [];
         $form = $event->getForm();
@@ -55,7 +55,7 @@ class NodesResizeFormListener implements EventSubscriberInterface
     /**
      * After submitted data is set (and before validation), add the new collection subforms.
      */
-    public function preSubmit(FormEvent $event)
+    public function preSubmit(FormEvent $event): void
     {
         $nodes = $event->getData();
         $form = $event->getForm();
@@ -73,11 +73,11 @@ class NodesResizeFormListener implements EventSubscriberInterface
         }
     }
 
-    protected function addSubform($name, string $discr, FormInterface $form)
+    protected function addSubform(self|string $name, string $discr, FormInterface $form)
     {
         $formClass = $this->nodeDiscriminator->getFormTypeFromDiscriminator($discr);
 
-        if (empty($formClass)) {
+        if ('' === $formClass || '0' === $formClass) {
             throw new RuntimeException(sprintf('No form type was found for %s discriminator value', $discr));
         }
 

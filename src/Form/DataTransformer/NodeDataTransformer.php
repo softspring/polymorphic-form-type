@@ -54,7 +54,7 @@ class NodeDataTransformer implements DataTransformerInterface
 
             return $data;
         } catch (ReflectionException $e) {
-            throw new TransformationFailedException(sprintf('The "%s" class not exists', is_object($value) ? get_class($value) : $value));
+            throw new TransformationFailedException(sprintf('The "%s" class not exists', is_object($value) ? get_class($value) : $value), $e->getCode(), $e);
         }
     }
 
@@ -95,11 +95,11 @@ class NodeDataTransformer implements DataTransformerInterface
 
             return $element;
         } catch (ReflectionException $e) {
-            throw new TransformationFailedException(sprintf('The "%s" class not exists', is_object($value) ? get_class($value) : $value));
+            throw new TransformationFailedException(sprintf('The "%s" class not exists', is_object($value) ? get_class($value) : $value), $e->getCode(), $e);
         }
     }
 
-    protected function reverseTransformInitialValue($value): mixed
+    protected function reverseTransformInitialValue(array $value): mixed
     {
         $className = $this->nodeDiscriminator->getClassNameForDiscriminator($value[$this->discriminatorField]);
 
@@ -111,7 +111,7 @@ class NodeDataTransformer implements DataTransformerInterface
             }
 
             return $element;
-        } elseif ('array' == $className) {
+        } elseif ('array' === $className) {
             return [];
         }
 

@@ -5,7 +5,6 @@ namespace Softspring\Component\PolymorphicFormType\Form\Type;
 use Softspring\Component\PolymorphicFormType\Form\DataTransformer\NodeDataTransformer;
 use Softspring\Component\PolymorphicFormType\Form\Discriminator\NodeDiscriminator;
 use Softspring\Component\PolymorphicFormType\Form\EventListener\NodesResizeFormListener;
-use Softspring\Component\PolymorphicFormType\Form\Type\Node\AbstractNodeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -71,14 +70,7 @@ class PolymorphicCollectionType extends AbstractType
         $prototypes = [];
 
         foreach ($options['types_map'] as $discr => $formClass) {
-            /* @var AbstractNodeType $formType */
-            if (is_object($formClass)) {
-                $formType = $formClass;
-            } elseif (class_exists($formClass)) {
-                $formType = $formClass;
-            } else {
-                $formType = $formClass;
-            }
+            $formType = $formClass;
 
             $formOptions = $options['types_options'][$discr] ?? [];
             $formOptions['discriminator_field'] = $options['discriminator_field'];
@@ -103,7 +95,7 @@ class PolymorphicCollectionType extends AbstractType
             }
 
             return $options['form_factory'];
-        } elseif ($this->formFactory) {
+        } elseif ($this->formFactory instanceof FormFactory) {
             return $this->formFactory;
         }
 

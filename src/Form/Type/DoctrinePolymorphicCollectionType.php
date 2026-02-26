@@ -59,7 +59,7 @@ class DoctrinePolymorphicCollectionType extends PolymorphicCollectionType
             }
 
             return $options['entity_manager'];
-        } elseif ($this->em) {
+        } elseif ($this->em instanceof EntityManagerInterface) {
             return $this->em;
         }
 

@@ -55,7 +55,7 @@ class NodeDiscriminator implements NodeDiscriminatorInterface
         return $discr;
     }
 
-    public function getIdFieldForObject($object)
+    public function getIdFieldForObject($object): null
     {
         return null;
     }
