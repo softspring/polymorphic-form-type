@@ -1,2 +1,0 @@
-console.log('polymorphic-form-type.js has been deprecated since 5.3, will be removed in 6.0. Please use collection-form-type.js');
-import '@softspring/collection-form-type/scripts/collection-form-type';
