@@ -31,7 +31,7 @@ class NodesResizeFormListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            FormEvents::PRE_SET_DATA => 'preSetData',
+            FormEvents::POST_SET_DATA => 'postSetData',
             FormEvents::PRE_SUBMIT => 'preSubmit',
         ];
     }
@@ -39,7 +39,7 @@ class NodesResizeFormListener implements EventSubscriberInterface
     /**
      * Before data is set, add the existing collection subforms.
      */
-    public function preSetData(FormEvent $event): void
+    public function postSetData(FormEvent $event): void
     {
         $nodes = $event->getData() ?? [];
         $form = $event->getForm();
