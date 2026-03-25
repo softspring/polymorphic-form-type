@@ -13,6 +13,7 @@
         "ergebnis/composer-normalize": "^2.50",
         "friendsofphp/php-cs-fixer": "^3.94",
         "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^12.5",
         "rector/rector": "^2.3",
         "symfony/yaml": "^6.4 || ^7.4 || ^8.0"
     },
@@ -47,8 +48,9 @@
         ],
         "run-tests": [
             "composer validate --strict --no-check-lock --ansi",
+            "XDEBUG_MODE=coverage vendor/bin/phpunit",
             "vendor/bin/rector process src tests --dry-run",
-            "vendor/bin/phpstan analyse src --level 5",
+            "vendor/bin/phpstan analyse src tests --level 5",
             "vendor/bin/php-cs-fixer fix --dry-run --diff",
             "vendor/bin/yaml-lint .github/ -vvv --parse-tags"
         ],
