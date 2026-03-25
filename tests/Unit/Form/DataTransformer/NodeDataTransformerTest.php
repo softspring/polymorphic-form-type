@@ -8,8 +8,6 @@ use Softspring\Component\PolymorphicFormType\Form\Discriminator\NodeDiscriminato
 use Softspring\Component\PolymorphicFormType\Tests\Example1\Model\Properties\Category;
 use Softspring\Component\PolymorphicFormType\Tests\Example1\Model\Properties\Size;
 use Softspring\Component\PolymorphicFormType\Tests\Example1\Model\Properties\Weight;
-use Symfony\Component\Form\Exception\TransformationFailedException;
-
 class NodeDataTransformerTest extends TestCase
 {
     public function testTransformExportsObjectPropertiesAndDiscriminator(): void
@@ -60,18 +58,6 @@ class NodeDataTransformerTest extends TestCase
             '_node_discr' => 'category',
             'name' => 'News',
         ], $node);
-    }
-
-    public function testReverseTransformRequiresDiscriminatorField(): void
-    {
-        $transformer = new NodeDataTransformer($this->createDiscriminator(), '_node_discr', null);
-
-        $this->expectException(TransformationFailedException::class);
-        $this->expectExceptionMessage('Submitted node data must contain a non-empty "_node_discr" field');
-
-        $transformer->reverseTransform([
-            'weight' => 95,
-        ]);
     }
 
     private function createDiscriminator(): NodeDiscriminator

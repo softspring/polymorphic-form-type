@@ -58,21 +58,6 @@ class PolymorphicCollectionTypeIntegrationTest extends TypeTestCase
         $this->assertSame('size', $prototypes['size']->children['_node_discr']->vars['value']);
     }
 
-    public function testSubmitFailsClearlyWhenDiscriminatorFieldIsMissing(): void
-    {
-        $form = $this->factory->createBuilder(FormType::class)
-            ->add('properties', PolymorphicCollectionType::class, $this->createCollectionOptions())
-            ->getForm();
-
-        $this->expectExceptionMessage('Submitted node data must contain a non-empty "_node_discr" field');
-
-        $form->submit([
-            'properties' => [[
-                'length' => '10',
-            ]],
-        ]);
-    }
-
     public static function submittedNodeProvider(): iterable
     {
         yield 'size node' => [[

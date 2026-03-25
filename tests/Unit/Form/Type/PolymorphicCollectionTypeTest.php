@@ -10,14 +10,17 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class PolymorphicCollectionTypeTest extends TestCase
 {
-    public function testGetFormFactoryAcceptsFormFactoryInterfaceInstances(): void
+    public function testGetFormFactoryRequiresConcreteFormFactoryInstance(): void
     {
         $formFactory = $this->createStub(FormFactoryInterface::class);
         $type = new TestablePolymorphicCollectionType();
 
-        $this->assertSame($formFactory, $type->publicGetFormFactory([
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('form_factory option must contain an instance of FormFactory');
+
+        $type->publicGetFormFactory([
             'form_factory' => $formFactory,
-        ]));
+        ]);
     }
 
     public function testBuildFormRequiresTypesMap(): void
