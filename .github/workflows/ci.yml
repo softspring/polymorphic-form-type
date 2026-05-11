@@ -61,7 +61,7 @@ jobs:
                 run: ./vendor/bin/php-cs-fixer fix -v --diff --dry-run
 
             -   name: Upload coverage to Codecov
-                uses: codecov/codecov-action@v5
+                uses: codecov/codecov-action@v6
                 with:
                     files: clover.xml
                     fail_ci_if_error: true
