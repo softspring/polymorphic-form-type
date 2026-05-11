@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Softspring\Component\PolymorphicFormType\Tests\Example1\Form\Type;
 
 use Softspring\Component\PolymorphicFormType\Form\Type\Node\AbstractNodeType;

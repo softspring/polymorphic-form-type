@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Softspring\Component\PolymorphicFormType\Form\Discriminator;
 
 interface NodeDiscriminatorInterface
