@@ -2,7 +2,6 @@
 
 namespace Softspring\Component\PolymorphicFormType\Tests\Integration\Form\Type;
 
-use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Softspring\Component\PolymorphicFormType\Form\Type\PolymorphicCollectionType;
 use Softspring\Component\PolymorphicFormType\Tests\Example1\Form\Type\CategoryPropertyType;
@@ -15,7 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-#[AllowMockObjectsWithoutExpectations]
 class PolymorphicCollectionTypeIntegrationTest extends TypeTestCase
 {
     #[DataProvider('submittedNodeProvider')]
