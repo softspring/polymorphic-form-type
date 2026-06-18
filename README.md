@@ -6,7 +6,7 @@
 [![PHP Version](https://img.shields.io/packagist/dependency-v/softspring/polymorphic-form-type/php?style=flat-square)](https://github.com/softspring/polymorphic-form-type/blob/6.0/composer.json)
 [![Downloads](https://img.shields.io/packagist/dt/softspring/polymorphic-form-type?style=flat-square)](https://packagist.org/packages/softspring/polymorphic-form-type)
 [![CI](https://img.shields.io/github/actions/workflow/status/softspring/polymorphic-form-type/ci.yml?branch=6.0&style=flat-square&label=CI)](https://github.com/softspring/polymorphic-form-type/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/codecov/c/github/softspring/polymorphic-form-type?branch=6.0&style=flat-square)](https://codecov.io/gh/softspring/polymorphic-form-type)
+[![Coverage](https://img.shields.io/codecov/c/github/softspring/polymorphic-form-type?branch=6.0&style=flat-square)](https://app.codecov.io/gh/softspring/polymorphic-form-type/tree/6.0)
 
 This component helps you build Symfony collections where each item can use a different form type and a different PHP class.
 
