@@ -95,7 +95,8 @@ class PolymorphicCollectionType extends AbstractType
             }
 
             return $options['form_factory'];
-        } elseif ($this->formFactory instanceof FormFactory) {
+        }
+        if ($this->formFactory instanceof FormFactory) {
             return $this->formFactory;
         }
 

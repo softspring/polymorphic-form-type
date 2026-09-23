@@ -102,16 +102,16 @@ class NodeDataTransformer implements DataTransformerInterface
     protected function reverseTransformInitialValue(array $value): mixed
     {
         $className = $this->nodeDiscriminator->getClassNameForDiscriminator($value[$this->discriminatorField]);
-
         if (!empty($value[$this->idField])) {
             $element = $this->nodeDiscriminator->findObjectById($className, $value[$this->idField]);
-
             if (!$element) {
                 throw new TransformationFailedException(sprintf('Failed transformation for class "%s" for element with id %u', $className, $value[$this->idField]));
             }
 
             return $element;
-        } elseif ('array' === $className) {
+        }
+
+        if ('array' === $className) {
             return [];
         }
 
