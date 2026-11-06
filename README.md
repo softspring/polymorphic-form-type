@@ -16,7 +16,7 @@ This package is part of [Armonic](https://softspring.es/en/armonic).
 
 ## Documentation
 
-[Armonic Documentation](https://armonic.softspring.es/latest/components/polymorphic-form-type)
+[Armonic Documentation](https://armonic.softspring.es/6.0/components/polymorphic-form-type)
 
 ## Contributing
 
