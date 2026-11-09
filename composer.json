@@ -5,7 +5,7 @@
     "type": "library",
     "require": {
         "php": ">=8.4",
-        "softspring/collection-form-type": "^6.0@dev",
+        "softspring/collection-form-type": "6.1.*@dev",
         "symfony/form": "^6.4 || ^7.4 || ^8.0"
     },
     "require-dev": {
@@ -38,7 +38,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-6.0": "6.0.x-dev"
+            "dev-6.0": "6.0.x-dev",
+            "dev-6.1": "6.1.x-dev"
         }
     },
     "scripts": {
